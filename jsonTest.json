@@ -4,5 +4,10 @@
     "courseName" : "aaaa",
     "instructor" : "bbb",
     "credits" : 0
+  }, {
+    "courseCode" : "eeee",
+    "courseName" : "aaaffefefea",
+    "instructor" : "bbasdasdasdasb",
+    "credits" : 1
   } ]
 }

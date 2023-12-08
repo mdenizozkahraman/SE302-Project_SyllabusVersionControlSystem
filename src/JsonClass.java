@@ -19,10 +19,10 @@ public class JsonClass {
             JsonNode jsonData = objectMapper.readTree(new File(jsonFilePath));
 
             JsonNode newCourse = objectMapper.createObjectNode()
-                    .put("courseCode", "TESTcourseCode")
-                    .put("courseName", "aaaa")
-                    .put("instructor", "bbb")
-                    .put("credits", 0);
+                    .put("courseCode", "eeee")
+                    .put("courseName", "aaaffefefea")
+                    .put("instructor", "bbasdasdasdasb")
+                    .put("credits", 1);
 
             List<JsonNode> syllabuses = new ArrayList<>();
             JsonNode coursesNode = jsonData.get("courses");
