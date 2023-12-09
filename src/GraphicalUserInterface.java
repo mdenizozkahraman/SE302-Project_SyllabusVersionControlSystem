@@ -53,10 +53,6 @@ public class GraphicalUserInterface {
 
         f.add(currentVersion, BorderLayout.CENTER);
 
-
-
-
-
         benjamin5.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JFrame previousVersionsFrame = new JFrame("Previous Versions");
@@ -80,12 +76,12 @@ public class GraphicalUserInterface {
                         int labelHeight = height - 100; // Yükseklik ayarı
 
                         JLabel previousVersionsLabel1 = new JLabel("Former Version");
-                        previousVersionsLabel1.setBorder(BorderFactory.createEtchedBorder()); // Sınır çizgisi eklemek için
+                        previousVersionsLabel1.setBorder(BorderFactory.createEtchedBorder());
 
                         JLabel previousVersionsLabel2 = new JLabel("Current Version");
-                        previousVersionsLabel2.setBorder(BorderFactory.createEtchedBorder()); // Sınır çizgisi eklemek için
+                        previousVersionsLabel2.setBorder(BorderFactory.createEtchedBorder());
 
-                        JPanel panel = new JPanel(new GridLayout(1, 2)); // 1 satır, 2 sütunlu bir grid layout
+                        JPanel panel = new JPanel(new GridLayout(1, 2));
                         panel.setBounds(50, 50, width - 100, height - 100);
                         panel.add(previousVersionsLabel1);
                         panel.add(previousVersionsLabel2);
