@@ -37,7 +37,7 @@ public class JsonToHtmlClass {
     private static String convertJsonToHtml(JsonNode jsonData) {
         StringBuilder htmlBuilder = new StringBuilder();
 
-        htmlBuilder.append("<!DOCTYPE html>\n");
+        htmlBuilder.append("<<!DOCTYPE  html>\n");
         htmlBuilder.append("<html lang=\"en\">\n");
         htmlBuilder.append("<head>\n");
         htmlBuilder.append("<meta charset=\"UTF-8\">\n");
