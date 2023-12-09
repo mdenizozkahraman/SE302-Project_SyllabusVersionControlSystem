@@ -35,6 +35,49 @@ public class GraphicalUserInterface {
         currentVersion.setBorder(BorderFactory.createEtchedBorder());
         f.add(currentVersion, BorderLayout.CENTER);
 
+        benjamin5.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JFrame previousVersionsFrame = new JFrame("Previous Versions");
+                JButton btn1, btn2;
+                btn1 = new JButton("Next");
+                btn2 = new JButton("Previous");
+
+                previousVersionsFrame.add(btn1);
+                previousVersionsFrame.add(btn2);
+
+
+                previousVersionsFrame.addComponentListener(new ComponentAdapter() {
+                    public void componentResized(ComponentEvent e) {
+                        int width = previousVersionsFrame.getContentPane().getWidth();
+                        int height = previousVersionsFrame.getContentPane().getHeight();
+
+                        btn1.setBounds( width - 150, 480, 100, 25);
+                        btn2.setBounds(50,   480, 100, 25);
+
+                        int labelWidth = (width - 150) / 2;
+                        int labelHeight = height - 100;
+
+                        JLabel previousVersionsLabel1 = new JLabel("Former Version");
+                        previousVersionsLabel1.setBorder(BorderFactory.createEtchedBorder());
+
+                        JLabel previousVersionsLabel2 = new JLabel("Current Version");
+                        previousVersionsLabel2.setBorder(BorderFactory.createEtchedBorder());
+
+                        JPanel panel = new JPanel(new GridLayout(1, 2));
+                        panel.setBounds(50, 50, width - 100, height - 100);
+                        panel.add(previousVersionsLabel1);
+                        panel.add(previousVersionsLabel2);
+
+                        previousVersionsFrame.add(panel);
+                    }
+
+                });
+                previousVersionsFrame.setSize(600, 550);
+                previousVersionsFrame.setLayout(null);
+                previousVersionsFrame.setVisible(true);
+            }
+        });
+
         f.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
                 int width = f.getContentPane().getWidth();
