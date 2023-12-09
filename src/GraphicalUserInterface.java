@@ -43,10 +43,19 @@ public class GraphicalUserInterface {
                 benjamin5.setBounds(width - 150, 190, 100, 50);
             }
         });
-        JLabel currentVersion = new JLabel("                                 Current Syllabus");
+        JLabel currentVersion = new JLabel("Current Syllabus");
+        currentVersion.setHorizontalAlignment(SwingConstants.CENTER);
+        currentVersion.setVerticalAlignment(SwingConstants.CENTER);
+
         currentVersion.setBounds(100, 50, 500, 600);
         currentVersion.setBorder(BorderFactory.createEtchedBorder());
-        f.add(currentVersion);
+
+
+        f.add(currentVersion, BorderLayout.CENTER);
+
+
+
+
 
         benjamin5.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -95,6 +104,7 @@ public class GraphicalUserInterface {
         f.setSize(800, 725);
         f.setLayout(null);
         f.setVisible(true);
+        f.setLocationRelativeTo(null);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
