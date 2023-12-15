@@ -7,5 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="sqlite-jdbc-3.44.1.0" level="project" />
+    <orderEntry type="library" name="slf4j-api-2.0.9" level="project" />
   </component>
 </module>

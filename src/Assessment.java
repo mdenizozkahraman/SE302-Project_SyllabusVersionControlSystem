@@ -15,6 +15,10 @@ public class Assessment {
         this.lo7 = lo7;
     }
 
+    public Assessment() {
+
+    }
+
     public String getSemesterActivities() {
         return semesterActivities;
     }

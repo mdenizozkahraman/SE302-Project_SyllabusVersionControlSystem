@@ -9,6 +9,10 @@ public class CourseOutcome {
         this.contributionLevel = contributionLevel;
     }
 
+    public CourseOutcome() {
+
+    }
+
     public int getNumber() {
         return number;
     }
