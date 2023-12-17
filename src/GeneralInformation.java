@@ -95,4 +95,17 @@ public class GeneralInformation {
     public void setCourseAssistant(ArrayList<String> courseAssistant) {
         this.courseAssistant = courseAssistant;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

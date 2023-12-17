@@ -4,6 +4,8 @@ import java.awt.event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class GraphicalUserInterface extends JFrame {
     private Connection con;
@@ -188,6 +190,7 @@ public class GraphicalUserInterface extends JFrame {
         f.setLayout(null);
         f.setVisible(true);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     }
     private static void displaySearchResults(ResultSet resultSet, JLabel currentVersion) throws SQLException {
         StringBuilder resultText = new StringBuilder("<html><body>");
@@ -217,6 +220,35 @@ public class GraphicalUserInterface extends JFrame {
         resultText.append("</body></html>");
         currentVersion.setText(resultText.toString());
     }
+
+    public static String currentDate(){
+        Calendar calendar = new GregorianCalendar();
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int minute = calendar.get(Calendar.MINUTE);
+        int hour = calendar.get(Calendar.HOUR);
+
+        if(hour < 10 ){
+            return (day + "/" + (month+1)+ "/"+  + year + " " + "0" + hour +":" +minute);
+
+        }
+
+        else {
+
+            return (day + "/" + (month+1)+ "/"+ year + " " + hour +":" +minute);
+
+        }
+    }
+
+
+
+
+
+
+
+
+
 }
 
 
