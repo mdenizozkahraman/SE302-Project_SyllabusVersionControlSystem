@@ -10,6 +10,10 @@ public class WeeklySubjects {
         this.suggestedReadings = suggestedReadings;
     }
 
+    public WeeklySubjects() {
+
+    }
+
     public int getWeek() {
         return week;
     }

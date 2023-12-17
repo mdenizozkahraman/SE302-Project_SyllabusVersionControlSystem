@@ -9,6 +9,10 @@ public class WorkLoad {
         this.workload = workload;
     }
 
+    public WorkLoad() {
+
+    }
+
     public String getSemesterActivities() {
         return semesterActivities;
     }

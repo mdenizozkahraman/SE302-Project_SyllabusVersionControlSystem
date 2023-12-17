@@ -20,6 +20,10 @@ public class GeneralInformation {
         this.courseAssistant = courseAssistant;
     }
 
+    public GeneralInformation() {
+
+    }
+
     public String getPrerequisites() {
         return prerequisites;
     }
