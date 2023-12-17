@@ -50,7 +50,7 @@ public class GraphicalUserInterface extends JFrame {
                         try (PreparedStatement preparedStatement = connection.prepareStatement(searchQuery)) {
                             preparedStatement.setString(1, "%" + searchText + "%");
                             ResultSet resultSet = preparedStatement.executeQuery();
-                           // displaySearchResults(resultSet);
+                            displaySearchResults(resultSet, currentVersion);
                         }
                     } catch (SQLException ex) {
                         System.out.println("Error executing search query: " + ex.getMessage());
@@ -61,52 +61,59 @@ public class GraphicalUserInterface extends JFrame {
 
         addBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String courseName = JOptionPane.showInputDialog("Enter Course Name:");
-                String courseCode = JOptionPane.showInputDialog("Enter Course Code:");
-                String semester = JOptionPane.showInputDialog("Enter Semester:");
-                String theoryHourStr = JOptionPane.showInputDialog("Enter Theory Hour:");
-                int theoryHour = Integer.parseInt(theoryHourStr);
-                String labHourStr = JOptionPane.showInputDialog("Enter Lab Hour:");
-                int labHour = Integer.parseInt(labHourStr);
-                String localCreditStr = JOptionPane.showInputDialog("Enter Local Credit:");
-                int localCredit = Integer.parseInt(localCreditStr);
-                String ectsStr = JOptionPane.showInputDialog("Enter ECTS:");
-                int ects = Integer.parseInt(ectsStr);
-                Syllabus newSyllabus = new Syllabus(
-                        1, courseName, courseCode, semester, theoryHour, labHour, localCredit, ects,
-                        new Assessment(), new CourseOutcome(), new GeneralInformation(),
-                        new WeeklySubjects(), new WorkLoad()
-                );
 
-                try (Connection connection = DriverManager.getConnection(url)) {
-                    String addQuery = "INSERT INTO syllabus_table " +
-                            "(courseName, courseCode, semester, theoryHour, labHour, localCredit, ects, assessment, courseOutcome, generalInformation, weeklySubjects, workLoad) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    try (PreparedStatement preparedStatement = connection.prepareStatement(addQuery)) {
-                        preparedStatement.setString(1, newSyllabus.getCourseName());
-                        preparedStatement.setString(2, newSyllabus.getCourseCode());
-                        preparedStatement.setString(3, newSyllabus.getSemester());
-                        preparedStatement.setInt(4, newSyllabus.getTheoryHour());
-                        preparedStatement.setInt(5, newSyllabus.getLabHour());
-                        preparedStatement.setInt(6, newSyllabus.getLocalCredit());
-                        preparedStatement.setInt(7, newSyllabus.getEcts());
-                        preparedStatement.setObject(8, newSyllabus.getAssessment());
-                        preparedStatement.setObject(9, newSyllabus.getCourseOutcome());
-                        preparedStatement.setObject(10, newSyllabus.getGeneralInformation());
-                        preparedStatement.setObject(11, newSyllabus.getWeeklySubjects());
-                        preparedStatement.setObject(12, newSyllabus.getWorkLoad());
+                JDialog dialog = new JDialog();
+                dialog.setTitle("Add New Syllabus");
+                dialog.setSize(300, 300);
+                dialog.setLayout(new GridLayout(8, 2, 10, 10));
 
-                        int rowsAffected = preparedStatement.executeUpdate();
-                        if (rowsAffected > 0) {
-                            System.out.println("New syllabus added successfully!");
-                            // Ekleme başarılıysa kullanıcıya bildirim verilebilir veya eklenen bilgiler gösterilebilir
-                        } else {
-                            System.out.println("Failed to add new syllabus!");
-                        }
+                JTextField courseNameField = new JTextField();
+                JTextField courseCodeField = new JTextField();
+                JTextField semesterField = new JTextField();
+                JTextField theoryHourField = new JTextField();
+                JTextField labHourField = new JTextField();
+                JTextField localCreditField = new JTextField();
+                JTextField ectsField = new JTextField();
+
+                dialog.add(new JLabel("Course Name:"));
+                dialog.add(courseNameField);
+                dialog.add(new JLabel("Course Code:"));
+                dialog.add(courseCodeField);
+                dialog.add(new JLabel("Semester:"));
+                dialog.add(semesterField);
+                dialog.add(new JLabel("Theory Hour:"));
+                dialog.add(theoryHourField);
+                dialog.add(new JLabel("Lab Hour:"));
+                dialog.add(labHourField);
+                dialog.add(new JLabel("Local Credit:"));
+                dialog.add(localCreditField);
+                dialog.add(new JLabel("ECTS:"));
+                dialog.add(ectsField);
+
+                JButton saveButton = new JButton("Save");
+                saveButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+
+                        String courseName = courseNameField.getText();
+                        String courseCode = courseCodeField.getText();
+                        String semester = semesterField.getText();
+                        int theoryHour = Integer.parseInt(theoryHourField.getText());
+                        int labHour = Integer.parseInt(labHourField.getText());
+                        int localCredit = Integer.parseInt(localCreditField.getText());
+                        int ects = Integer.parseInt(ectsField.getText());
+
+                        Syllabus newSyllabus = new Syllabus(
+                                1, courseName, courseCode, semester, theoryHour, labHour, localCredit, ects,
+                                new Assessment(), new CourseOutcome(), new GeneralInformation(),
+                                new WeeklySubjects(), new WorkLoad()
+                        );
+
+                        dialog.dispose();
                     }
-                } catch (SQLException ex) {
-                    System.out.println("Error adding new syllabus: " + ex.getMessage());
-                }
+                });
+
+                dialog.add(saveButton);
+                dialog.setVisible(true);
             }
         });
 
