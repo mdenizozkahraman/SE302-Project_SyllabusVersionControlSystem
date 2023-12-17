@@ -36,7 +36,7 @@ public class SyllabusDB {
                 // new syllabus
                 addSyllabus(con, syllabus);
 
-                syllabus.setEcts(6);
+                syllabus.getGeneralInformation().setEcts(6);
                 editSyllabus(con, syllabus);
 
                 deleteSyllabus(con, syllabus.getId());
@@ -92,13 +92,13 @@ public class SyllabusDB {
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = con.prepareStatement(addSyllabusSQL)) {
-            preparedStatement.setString(1, syllabus.getCourseName());
-            preparedStatement.setString(2, syllabus.getCourseCode());
-            preparedStatement.setString(3, syllabus.getSemester());
-            preparedStatement.setInt(4, syllabus.getTheoryHour());
-            preparedStatement.setInt(5, syllabus.getLabHour());
-            preparedStatement.setInt(6, syllabus.getLocalCredit());
-            preparedStatement.setInt(7, syllabus.getEcts());
+            preparedStatement.setString(1, syllabus.getGeneralInformation().getCourseName());
+            preparedStatement.setString(2, syllabus.getGeneralInformation().getCourseCode());
+            preparedStatement.setString(3, syllabus.getGeneralInformation().getSemester());
+            preparedStatement.setInt(4, syllabus.getGeneralInformation().getTheoryHour());
+            preparedStatement.setInt(5, syllabus.getGeneralInformation().getLabHour());
+            preparedStatement.setInt(6, syllabus.getGeneralInformation().getLocalCredit());
+            preparedStatement.setInt(7, syllabus.getGeneralInformation().getEcts());
             preparedStatement.setObject(8, syllabus.getAssessment());
             preparedStatement.setObject(9, syllabus.getCourseOutcome());
             preparedStatement.setObject(10, syllabus.getGeneralInformation());
@@ -145,13 +145,13 @@ public class SyllabusDB {
                 "WHERE id = ?";
 
         try (PreparedStatement preparedStatement = con.prepareStatement(editSyllabusSQL)) {
-            preparedStatement.setString(1, syllabus.getCourseName());
-            preparedStatement.setString(2, syllabus.getCourseCode());
-            preparedStatement.setString(3, syllabus.getSemester());
-            preparedStatement.setInt(4, syllabus.getTheoryHour());
-            preparedStatement.setInt(5, syllabus.getLabHour());
-            preparedStatement.setInt(6, syllabus.getLocalCredit());
-            preparedStatement.setInt(7, syllabus.getEcts());
+            preparedStatement.setString(1, syllabus.getGeneralInformation().getCourseName());
+            preparedStatement.setString(2, syllabus.getGeneralInformation().getCourseCode());
+            preparedStatement.setString(3, syllabus.getGeneralInformation().getSemester());
+            preparedStatement.setInt(4, syllabus.getGeneralInformation().getTheoryHour());
+            preparedStatement.setInt(5, syllabus.getGeneralInformation().getLabHour());
+            preparedStatement.setInt(6, syllabus.getGeneralInformation().getLocalCredit());
+            preparedStatement.setInt(7, syllabus.getGeneralInformation().getEcts());
             preparedStatement.setInt(8, syllabus.getId());
 
             preparedStatement.executeUpdate();

@@ -1,14 +1,28 @@
 import java.util.ArrayList;
 
 public class GeneralInformation {
+    private String courseName, courseCode, semester;
+    private int theoryHour, labHour, localCredit, ects;
+
+
     private String prerequisites, teachingMethods, courseObjective, learningOutcomes, courseDescription;
     private String courseCategory[];
     private ArrayList<String> courseCoordinator, courseLecturer, courseAssistant;
 
-    public GeneralInformation(String prerequisites, String teachingMethods, String courseObjective,
+    public GeneralInformation(String courseName, String courseCode, String semester, int theoryHour,
+                              int labHour, int localCredit,int ects, String prerequisites,
+                              String teachingMethods, String courseObjective,
                               String learningOutcomes, String courseDescription, String[] courseCategory,
                               ArrayList<String> courseCoordinator, ArrayList<String> courseLecturer,
-                              ArrayList<String> courseAssistant) {
+                              ArrayList<String> courseAssistant)
+    {
+        this.courseName = courseName;
+        this.courseCode = courseCode;
+        this.semester = semester;
+        this.theoryHour = theoryHour;
+        this.labHour = labHour;
+        this.localCredit = localCredit;
+        this.ects = ects;
         this.prerequisites = prerequisites;
         this.teachingMethods = teachingMethods;
         this.courseObjective = courseObjective;
@@ -22,6 +36,62 @@ public class GeneralInformation {
 
     public GeneralInformation() {
 
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public String getCourseCode() {
+        return courseCode;
+    }
+
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
+    }
+
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
+
+    public int getTheoryHour() {
+        return theoryHour;
+    }
+
+    public void setTheoryHour(int theoryHour) {
+        this.theoryHour = theoryHour;
+    }
+
+    public int getLabHour() {
+        return labHour;
+    }
+
+    public void setLabHour(int labHour) {
+        this.labHour = labHour;
+    }
+
+    public int getLocalCredit() {
+        return localCredit;
+    }
+
+    public void setLocalCredit(int localCredit) {
+        this.localCredit = localCredit;
+    }
+
+    public int getEcts() {
+        return ects;
+    }
+
+    public void setEcts(int ects) {
+        this.ects = ects;
     }
 
     public String getPrerequisites() {
