@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SE302-Project_SyllabusVersionControlSystem:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SE302_Project_SyllabusVersionControlSystem_jar</output-path>
+    <root id="archive" name="SE302-Project_SyllabusVersionControlSystem.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="SE302-Project_SyllabusVersionControlSystem" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.16.0/jackson-core-2.16.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.16.0/jackson-annotations-2.16.0.jar" path-in-jar="/" />
+      <element id="library" level="project" name="SE302-Project_SyllabusVersionControlSystem" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.16.0/jackson-databind-2.16.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
