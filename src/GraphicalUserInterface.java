@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class GraphicalUserInterface extends JFrame {
+    private static JTextArea currentVersion;
     private Connection con;
 
     public static void main(String[] args) {
@@ -34,12 +35,13 @@ public class GraphicalUserInterface extends JFrame {
         f.add(previousVersionsBtn);
         f.add(searchBar);
 
-        JLabel currentVersion = new JLabel("Current Syllabus");
-        currentVersion.setHorizontalAlignment(SwingConstants.CENTER);
-        currentVersion.setVerticalAlignment(SwingConstants.CENTER);
-        currentVersion.setBounds(100, 50, 500, 600);
-        currentVersion.setBorder(BorderFactory.createEtchedBorder());
-        f.add(currentVersion, BorderLayout.CENTER);
+        currentVersion = new JTextArea("Current Syllabus");
+        currentVersion.setEditable(false); // Initially, set as not editable
+        currentVersion.setWrapStyleWord(true);
+        currentVersion.setLineWrap(true);
+        JScrollPane scrollPane = new JScrollPane(currentVersion);
+        scrollPane.setBounds(100, 50, 500, 600);
+        f.add(scrollPane);
 
         String url = "jdbc:sqlite:SyllabusDB.db";
 
@@ -119,6 +121,66 @@ public class GraphicalUserInterface extends JFrame {
             }
         });
 
+        editBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if ("Current Syllabus".equals(currentVersion.getText())) {
+                    currentVersion.setText("");
+                }
+                currentVersion.setEditable(!currentVersion.isEditable());
+            }
+        });
+
+        saveBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (currentVersion.isEditable()) {
+                    // If in edit mode, capture the edited text and save to the database
+                    String editedText = currentVersion.getText();
+
+
+                   String updateQuery = "UPDATE syllabus_table SET column_name = ? WHERE condition = ?";
+                     try (Connection connection = DriverManager.getConnection(url);
+                     PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                       preparedStatement.setString(1, editedText);
+                       //preparedStatement.setString(2, condition);
+                       int rowsAffected = preparedStatement.executeUpdate();
+                    } catch (SQLException ex) {
+                        System.out.println("Error updating syllabus: " + ex.getMessage());
+                    }
+                    currentVersion.setEditable(false);
+                }
+            }
+        });
+
+        deleteBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String courseCodeToDelete = JOptionPane.showInputDialog(f, "Enter Course Code to Delete:");
+
+                if (courseCodeToDelete != null && !courseCodeToDelete.isEmpty()) {
+                    int confirmDelete = JOptionPane.showConfirmDialog(f, "Are you sure you want to delete the syllabus with course code: " + courseCodeToDelete + "?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+                    if (confirmDelete == JOptionPane.YES_OPTION) {
+
+                        String deleteQuery = "DELETE FROM syllabus_table WHERE courseCode = ?";
+                        try (Connection connection = DriverManager.getConnection(url);
+                             PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
+                            preparedStatement.setString(1, courseCodeToDelete);
+                            int rowsAffected = preparedStatement.executeUpdate();
+
+                            if (rowsAffected > 0) {
+                                JOptionPane.showMessageDialog(f, "Syllabus with course code " + courseCodeToDelete + " deleted successfully!");
+                            } else {
+                                JOptionPane.showMessageDialog(f, "Syllabus with course code " + courseCodeToDelete + " not found.");
+                            }
+                        } catch (SQLException ex) {
+                            System.out.println("Error deleting syllabus: " + ex.getMessage());
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(f, "Please enter a valid course code to delete.");
+                }
+            }
+        });
+
         previousVersionsBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JFrame previousVersionsFrame = new JFrame("Previous Versions");
@@ -192,7 +254,7 @@ public class GraphicalUserInterface extends JFrame {
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
-    private static void displaySearchResults(ResultSet resultSet, JLabel currentVersion) throws SQLException {
+    private static void displaySearchResults(ResultSet resultSet, JTextArea currentVersion) throws SQLException {
         StringBuilder resultText = new StringBuilder("<html><body>");
         resultText.append("<h2>Search Results:</h2>");
 
@@ -233,22 +295,11 @@ public class GraphicalUserInterface extends JFrame {
             return (day + "/" + (month+1)+ "/"+  + year + " " + "0" + hour +":" +minute);
 
         }
-
         else {
-
             return (day + "/" + (month+1)+ "/"+ year + " " + hour +":" +minute);
 
         }
     }
-
-
-
-
-
-
-
-
-
 }
 
 

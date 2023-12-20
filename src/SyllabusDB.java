@@ -109,6 +109,7 @@ public class SyllabusDB {
         }
     }
 
+
     private static void retrieveData(Connection con, String tableName) throws SQLException {
         String retrieveDataSQL = "SELECT * FROM " + tableName;
 
@@ -169,6 +170,8 @@ public class SyllabusDB {
     public static void main(String[] args) {
         connect();
     }
+
+
 }
 
 
