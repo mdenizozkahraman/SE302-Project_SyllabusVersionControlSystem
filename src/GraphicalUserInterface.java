@@ -243,12 +243,6 @@ public class GraphicalUserInterface extends JFrame {
 
 
 
-
-
-
-
-
-
 }
 
 
