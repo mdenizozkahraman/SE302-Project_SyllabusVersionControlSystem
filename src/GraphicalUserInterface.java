@@ -268,20 +268,22 @@ public class GraphicalUserInterface extends JFrame {
             int localCredit = resultSet.getInt("localCredit");
             int ects = resultSet.getInt("ects");
 
-            resultText.append("<b>ID:</b> ").append(id).append("<br>");
-            resultText.append("<b>Course Name:</b> ").append(courseName).append("<br>");
+            resultText.append("<div>");
             resultText.append("<b>Course Code:</b> ").append(courseCode).append("<br>");
+            resultText.append("<b>Course Name:</b> ").append(courseName).append("<br>");
             resultText.append("<b>Semester:</b> ").append(semester).append("<br>");
             resultText.append("<b>Theory Hour:</b> ").append(theoryHour).append("<br>");
             resultText.append("<b>Lab Hour:</b> ").append(labHour).append("<br>");
             resultText.append("<b>Local Credit:</b> ").append(localCredit).append("<br>");
             resultText.append("<b>ECTS:</b> ").append(ects).append("<br>");
-            resultText.append("----------------------<br>");
+            resultText.append("</div><hr>");
         }
 
         resultText.append("</body></html>");
         currentVersion.setText(resultText.toString());
     }
+
+
 
     public static String currentDate(){
         Calendar calendar = new GregorianCalendar();
