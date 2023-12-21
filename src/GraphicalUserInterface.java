@@ -36,12 +36,13 @@ public class GraphicalUserInterface extends JFrame {
         f.add(searchBar);
 
         currentVersion = new JTextArea("Current Syllabus");
-        currentVersion.setEditable(false); // Initially, set as not editable
+        currentVersion.setEditable(false);
         currentVersion.setWrapStyleWord(true);
         currentVersion.setLineWrap(true);
         JScrollPane scrollPane = new JScrollPane(currentVersion);
         scrollPane.setBounds(100, 50, 500, 600);
         f.add(scrollPane);
+
 
         String url = "jdbc:sqlite:SyllabusDB.db";
 
@@ -133,20 +134,26 @@ public class GraphicalUserInterface extends JFrame {
         saveBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (currentVersion.isEditable()) {
-                    // If in edit mode, capture the edited text and save to the database
                     String editedText = currentVersion.getText();
 
+                    String updateQuery = "UPDATE syllabus_table SET column_name = ? WHERE condition = ?";
+                    try (Connection connection = DriverManager.getConnection(url);
+                         PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                        preparedStatement.setString(1, editedText);
+                       // preparedStatement.setString(2, condition);
+                        int rowsAffected = preparedStatement.executeUpdate();
 
-                   String updateQuery = "UPDATE syllabus_table SET column_name = ? WHERE condition = ?";
-                     try (Connection connection = DriverManager.getConnection(url);
-                     PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
-                       preparedStatement.setString(1, editedText);
-                       //preparedStatement.setString(2, condition);
-                       int rowsAffected = preparedStatement.executeUpdate();
+                        if (rowsAffected > 0) {
+                            JOptionPane.showMessageDialog(f, "Changes saved successfully!");
+                        } else {
+                            JOptionPane.showMessageDialog(f, "Failed to save changes.");
+                        }
                     } catch (SQLException ex) {
                         System.out.println("Error updating syllabus: " + ex.getMessage());
                     }
                     currentVersion.setEditable(false);
+                } else {
+                    JOptionPane.showMessageDialog(f, "Nothing to save. Please enable editing first.");
                 }
             }
         });
@@ -257,6 +264,7 @@ public class GraphicalUserInterface extends JFrame {
     private static void displaySearchResults(ResultSet resultSet, JTextArea currentVersion) throws SQLException {
         StringBuilder resultText = new StringBuilder("<html><body>");
         resultText.append("<h2>Search Results:</h2>");
+        currentVersion.setText(String.valueOf(resultText));
 
         while (resultSet.next()) {
             int id = resultSet.getInt("id");
@@ -268,20 +276,22 @@ public class GraphicalUserInterface extends JFrame {
             int localCredit = resultSet.getInt("localCredit");
             int ects = resultSet.getInt("ects");
 
-            resultText.append("<b>ID:</b> ").append(id).append("<br>");
-            resultText.append("<b>Course Name:</b> ").append(courseName).append("<br>");
+            resultText.append("<div>");
             resultText.append("<b>Course Code:</b> ").append(courseCode).append("<br>");
+            resultText.append("<b>Course Name:</b> ").append(courseName).append("<br>");
             resultText.append("<b>Semester:</b> ").append(semester).append("<br>");
             resultText.append("<b>Theory Hour:</b> ").append(theoryHour).append("<br>");
             resultText.append("<b>Lab Hour:</b> ").append(labHour).append("<br>");
             resultText.append("<b>Local Credit:</b> ").append(localCredit).append("<br>");
             resultText.append("<b>ECTS:</b> ").append(ects).append("<br>");
-            resultText.append("----------------------<br>");
+            resultText.append("</div><hr>");
         }
 
         resultText.append("</body></html>");
         currentVersion.setText(resultText.toString());
     }
+
+
 
     public static String currentDate(){
         Calendar calendar = new GregorianCalendar();
