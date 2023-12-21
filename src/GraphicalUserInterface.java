@@ -43,6 +43,9 @@ public class GraphicalUserInterface extends JFrame {
         scrollPane.setBounds(100, 50, 500, 600);
         f.add(scrollPane);
 
+        String resultText = "Search Results:\nID: 18\nCourse Name: Fundamental Topics in Programming\nCourse Code: CE216\nSemester: Spring\nTheory Hour: 2\nLab Hour: 2\nLocal Credit: 3\nECTS: 6\n----------------------";
+        currentVersion.setText(resultText);
+
         String url = "jdbc:sqlite:SyllabusDB.db";
 
         searchBtn.addActionListener(new ActionListener() {
@@ -133,20 +136,26 @@ public class GraphicalUserInterface extends JFrame {
         saveBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (currentVersion.isEditable()) {
-                    // If in edit mode, capture the edited text and save to the database
                     String editedText = currentVersion.getText();
 
+                    String updateQuery = "UPDATE syllabus_table SET column_name = ? WHERE condition = ?";
+                    try (Connection connection = DriverManager.getConnection(url);
+                         PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                        preparedStatement.setString(1, editedText);
+                       // preparedStatement.setString(2, condition);
+                        int rowsAffected = preparedStatement.executeUpdate();
 
-                   String updateQuery = "UPDATE syllabus_table SET column_name = ? WHERE condition = ?";
-                     try (Connection connection = DriverManager.getConnection(url);
-                     PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
-                       preparedStatement.setString(1, editedText);
-                       //preparedStatement.setString(2, condition);
-                       int rowsAffected = preparedStatement.executeUpdate();
+                        if (rowsAffected > 0) {
+                            JOptionPane.showMessageDialog(f, "Changes saved successfully!");
+                        } else {
+                            JOptionPane.showMessageDialog(f, "Failed to save changes.");
+                        }
                     } catch (SQLException ex) {
                         System.out.println("Error updating syllabus: " + ex.getMessage());
                     }
                     currentVersion.setEditable(false);
+                } else {
+                    JOptionPane.showMessageDialog(f, "Nothing to save. Please enable editing first.");
                 }
             }
         });
@@ -268,20 +277,22 @@ public class GraphicalUserInterface extends JFrame {
             int localCredit = resultSet.getInt("localCredit");
             int ects = resultSet.getInt("ects");
 
-            resultText.append("<b>ID:</b> ").append(id).append("<br>");
-            resultText.append("<b>Course Name:</b> ").append(courseName).append("<br>");
+            resultText.append("<div>");
             resultText.append("<b>Course Code:</b> ").append(courseCode).append("<br>");
+            resultText.append("<b>Course Name:</b> ").append(courseName).append("<br>");
             resultText.append("<b>Semester:</b> ").append(semester).append("<br>");
             resultText.append("<b>Theory Hour:</b> ").append(theoryHour).append("<br>");
             resultText.append("<b>Lab Hour:</b> ").append(labHour).append("<br>");
             resultText.append("<b>Local Credit:</b> ").append(localCredit).append("<br>");
             resultText.append("<b>ECTS:</b> ").append(ects).append("<br>");
-            resultText.append("----------------------<br>");
+            resultText.append("</div><hr>");
         }
 
         resultText.append("</body></html>");
         currentVersion.setText(resultText.toString());
     }
+
+
 
     public static String currentDate(){
         Calendar calendar = new GregorianCalendar();
