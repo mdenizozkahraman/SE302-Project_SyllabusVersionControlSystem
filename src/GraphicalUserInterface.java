@@ -36,15 +36,13 @@ public class GraphicalUserInterface extends JFrame {
         f.add(searchBar);
 
         currentVersion = new JTextArea("Current Syllabus");
-        currentVersion.setEditable(false); // Initially, set as not editable
+        currentVersion.setEditable(false);
         currentVersion.setWrapStyleWord(true);
         currentVersion.setLineWrap(true);
         JScrollPane scrollPane = new JScrollPane(currentVersion);
         scrollPane.setBounds(100, 50, 500, 600);
         f.add(scrollPane);
 
-        String resultText = "Search Results:\nID: 18\nCourse Name: Fundamental Topics in Programming\nCourse Code: CE216\nSemester: Spring\nTheory Hour: 2\nLab Hour: 2\nLocal Credit: 3\nECTS: 6\n----------------------";
-        currentVersion.setText(resultText);
 
         String url = "jdbc:sqlite:SyllabusDB.db";
 
@@ -266,6 +264,7 @@ public class GraphicalUserInterface extends JFrame {
     private static void displaySearchResults(ResultSet resultSet, JTextArea currentVersion) throws SQLException {
         StringBuilder resultText = new StringBuilder("<html><body>");
         resultText.append("<h2>Search Results:</h2>");
+        currentVersion.setText(String.valueOf(resultText));
 
         while (resultSet.next()) {
             int id = resultSet.getInt("id");
