@@ -162,8 +162,18 @@ public class JsonToHtmlClass {
         for (int week = 1; week <= 16; week++) {
             htmlBuilder.append("<tr>\n");
             htmlBuilder.append("<td>").append(week).append("</td>\n");
-            htmlBuilder.append("<td>").append("Subject for Week " + week).append("</td>\n");
-            htmlBuilder.append("<td>").append("Materials for Week " + week).append("</td>\n");
+
+            if (week == 15) {
+                htmlBuilder.append("<td>").append("Semester Review").append("</td>\n");
+                htmlBuilder.append("<td>").append("").append("</td>\n");
+            } else if (week == 16) {
+                htmlBuilder.append("<td>").append("Final Exam").append("</td>\n");
+                htmlBuilder.append("<td>").append("").append("</td>\n");
+            } else {
+                htmlBuilder.append("<td>").append("").append("</td>\n");
+                htmlBuilder.append("<td>").append("").append("</td>\n");
+            }
+
             htmlBuilder.append("</tr>\n");
         }
         htmlBuilder.append("</table>\n");
@@ -199,7 +209,7 @@ public class JsonToHtmlClass {
         htmlBuilder.append("<th>LO4</th>\n");
         htmlBuilder.append("</tr>\n");
 
-        for (int row = 1; row <= 15; row++) {
+        for (int row = 1; row <= 13; row++) {
             htmlBuilder.append("<tr>\n");
             htmlBuilder.append("<td>").append("Activity " + row).append("</td>\n");
             htmlBuilder.append("<td>").append("Number " + row).append("</td>\n");

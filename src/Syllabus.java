@@ -16,6 +16,15 @@ public class Syllabus {
         this.workLoad = workLoad;
     }
 
+    public Syllabus(int id, Assessment assessment, CourseOutcome courseOutcome, GeneralInformation generalInformation, WeeklySubjects weeklySubjects, WorkLoad workLoad) {
+        this.id = id;
+        this.assessment = assessment;
+        this.courseOutcome = courseOutcome;
+        this.generalInformation = generalInformation;
+        this.weeklySubjects = weeklySubjects;
+        this.workLoad = workLoad;
+    }
+
     public Assessment getAssessment() {
         return assessment;
     }
