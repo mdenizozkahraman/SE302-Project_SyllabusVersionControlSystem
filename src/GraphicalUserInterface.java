@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class GraphicalUserInterface {
 
@@ -91,15 +92,6 @@ public class GraphicalUserInterface {
             }
         }
     }
-
-
-
-
-
-
-
-
-
 
 
     public static void main(String[] args) {
@@ -306,14 +298,21 @@ public class GraphicalUserInterface {
         JPanel weeklySubjectsPanel = new JPanel();
         weeklySubjectsPanel.setLayout(new GridLayout(16, 2));
 
+        ArrayList<JTextField> jTextSubjectFieldArrayList = new ArrayList<>();
+        ArrayList<JTextField> jTextMaterialFieldArrayList = new ArrayList<>();
+
         for (int week = 1; week <= 16; week++) {
             weeklySubjectsPanel.add(new JLabel("Week " + week + " Subjects:"));
             JTextField subjectsField = new JTextField();
             weeklySubjectsPanel.add(subjectsField);
 
+            jTextSubjectFieldArrayList.add(subjectsField);
+
             weeklySubjectsPanel.add(new JLabel("Week " + week + " Materials:"));
             JTextField materialsField = new JTextField();
             weeklySubjectsPanel.add(materialsField);
+
+            jTextMaterialFieldArrayList.add(materialsField);
 
             if (week == 15) {
                 subjectsField.setText("Semester Review");
@@ -323,7 +322,10 @@ public class GraphicalUserInterface {
                 subjectsField.setText("Final Exam");
             }
 
+
         }
+
+
 
         JPanel assesmentPanel = new JPanel();
         assesmentPanel.setLayout(new GridLayout(13, 6));
@@ -350,6 +352,7 @@ public class GraphicalUserInterface {
             JTextField semesterActivityField = new JTextField();
 
             semesterActivityField.setText(semesterActivities[row-1]);
+
 
             JLabel numberLabel = new JLabel("Number " + row + ":");
             JTextField numberField = new JTextField();
@@ -378,6 +381,7 @@ public class GraphicalUserInterface {
             assesmentPanel.add(lo3Field);
             assesmentPanel.add(lo4Label);
             assesmentPanel.add(lo4Field);
+
         }
 
         JPanel ectsWorkloadPanel = new JPanel();
@@ -506,9 +510,17 @@ public class GraphicalUserInterface {
                 String suggestedMaterials = suggestedMaterialsField.getText();
 
 
+                for (int i = 0; i < 16; i++){
+                    System.out.println(jTextSubjectFieldArrayList.get(i).getText());
+                    System.out.println(jTextMaterialFieldArrayList.get(i).getText());
+                }
+
+
                 GraphicalUserInterface gui = new GraphicalUserInterface();
 
-                gui.insert_GeneralInformation(courseName,courseCode,semester,theoryHour,labHour,localCredit,ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials);
+
+
+               // gui.insert_GeneralInformation(courseName,courseCode,semester,theoryHour,labHour,localCredit,ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials);
 
 
 
