@@ -2,10 +2,111 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class GraphicalUserInterface {
+
+    private void insert_GeneralInformation(String courseName, String courseCode, String semester, String theoryHour, String labHour, String localCredit, String ects,String prerequisites,String courseLanguage,String courseType,String courseLevel,String modeOfDelivery,String teachingMethod,String courseCoordinator,String courseLecturer,String assistant ,String courseObjectives, String learningOutcomes,String courseDescription,String courseCategory,String courseBook,String suggestedMaterials) {
+        Connection con = SyllabusDB.connect();
+        PreparedStatement ps = null;
+
+        try {
+            String sql = "INSERT INTO General_Information (courseName, courseCode, semester, theoryHour, labHour, localCredit, ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials) VALUES (?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?,?,?)";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, courseName);
+            ps.setString(2, courseCode);
+            ps.setString(3, semester);
+            ps.setString(4, theoryHour);
+            ps.setString(5, labHour);
+            ps.setString(6, localCredit);
+            ps.setString(7, ects);
+            ps.setString(8,prerequisites);
+            ps.setString(9,courseLanguage);
+            ps.setString(10,courseType);
+            ps.setString(11,courseLevel);
+            ps.setString(12,modeOfDelivery);
+            ps.setString(13,teachingMethod);
+            ps.setString(14,courseCoordinator);
+            ps.setString(15,courseLecturer);
+            ps.setString(16,assistant);
+            ps.setString(17,courseObjectives);
+            ps.setString(18,learningOutcomes);
+            ps.setString(19,courseDescription);
+            ps.setString(20,courseCategory);
+            ps.setString(21,courseBook);
+            ps.setString(22,suggestedMaterials);
+
+
+            ps.execute();
+
+            System.out.println("Data has been inserted successfully.");
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+    }
+    private void insert_Assesment(String semesterActivites,String number,String weighting,String lo1,String lo2,String lo3,String lo4 ) {
+        Connection con = SyllabusDB.connect();
+        PreparedStatement ps = null;
+
+        try {
+            String sql = "INSERT INTO assesment(semesterActivites,number,weighting,lo1,lo2,lo3,lo4) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, semesterActivites);
+            ps.setString(2, number);
+            ps.setString(3, weighting);
+            ps.setString(4, lo1);
+            ps.setString(5, lo2);
+            ps.setString(6, lo3);
+            ps.setString(7, lo4);
+
+
+            ps.execute();
+
+            System.out.println("Data has been inserted successfully.");
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
+
         SwingUtilities.invokeLater(() -> GUI());
+        SyllabusDB.connect();
+
     }
 
     private static void GUI() {
@@ -49,6 +150,8 @@ public class GraphicalUserInterface {
                 showAddForm();
             }
         });
+
+
 
         topPanel.add(searchText);
         topPanel.add(searchButton);
@@ -382,48 +485,34 @@ public class GraphicalUserInterface {
                 String courseName = courseNameField.getText();
                 String courseCode = courseCodeField.getText();
                 String semester = semesterField.getText();
-                String theory = theoryField.getText();
-                String applicationLab = applicationLabField.getText();
-                String localCredits = localCreditsField.getText();
-                String ECTS = ECTSField.getText();
+                String theoryHour = theoryField.getText();
+                String labHour = applicationLabField.getText();
+                String localCredit = localCreditsField.getText();
+                String ects = ECTSField.getText();
                 String prerequisites = prerequisitesField.getText();
                 String courseLanguage = courseLanguageField.getText();
                 String courseType = courseTypeField.getText();
                 String courseLevel = courseLevelField.getText();
                 String modeOfDelivery = modeOfDeliveryField.getText();
-                String teachingMethods = teachingMethodsField.getText();
+                String teachingMethod = teachingMethodsField.getText();
                 String courseCoordinator = courseCoordinatorField.getText();
-                String courseLecturers = courseLecturersField.getText();
-                String assistants = assistantsField.getText();
+                String courseLecturer = courseLecturersField.getText();
+                String assistant = assistantsField.getText();
                 String courseObjectives = courseObjectivesField.getText();
                 String learningOutcomes = learningOutcomesField.getText();
                 String courseDescription = courseDescriptionField.getText();
                 String courseCategory = courseCategoryField.getText();
-                String courseNotes = courseNotesField.getText();
+                String courseBook = courseNotesField.getText();
                 String suggestedMaterials = suggestedMaterialsField.getText();
 
-                System.out.println("Course Name: " + courseName);
-                System.out.println("Course Code: " + courseCode);
-                System.out.println("Semester: " + semester);
-                System.out.println("Theory: " + theory);
-                System.out.println("Application Lab: " + applicationLab);
-                System.out.println("Local Credits: " + localCredits);
-                System.out.println("ECTS: " + ECTS);
-                System.out.println("Prerequisites: " + prerequisites);
-                System.out.println("Course Language: " + courseLanguage);
-                System.out.println("Course Type: " + courseType);
-                System.out.println("Course Level: " + courseLevel);
-                System.out.println("Mode of Delivery: " + modeOfDelivery);
-                System.out.println("Teaching Methods: " + teachingMethods);
-                System.out.println("Course Coordinator: " + courseCoordinator);
-                System.out.println("Course Lecturers: " + courseLecturers);
-                System.out.println("Assistants: " + assistants);
-                System.out.println("Course Objectives: " + courseObjectives);
-                System.out.println("Learning Outcomes: " + learningOutcomes);
-                System.out.println("Course Description: " + courseDescription);
-                System.out.println("Course Category: " + courseCategory);
-                System.out.println("Course Notes: " + courseNotes);
-                System.out.println("Suggested Materials: " + suggestedMaterials);
+
+                GraphicalUserInterface gui = new GraphicalUserInterface();
+
+                gui.insert_GeneralInformation(courseName,courseCode,semester,theoryHour,labHour,localCredit,ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials);
+
+
+
+
 
                 addFrame.dispose();
             }
