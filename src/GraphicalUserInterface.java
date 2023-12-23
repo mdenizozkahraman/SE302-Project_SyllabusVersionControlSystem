@@ -4,12 +4,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class GraphicalUserInterface {
+
+
+    private static JTextArea resultTextArea;
+
+
 
     static Assessment assessment = new Assessment();
     static CourseOutcome courseOutcome = new CourseOutcome();
@@ -20,6 +26,69 @@ public class GraphicalUserInterface {
     static Syllabus syllabus = new Syllabus(0,assessment,courseOutcome,generalInformation,weeklySubjects,workLoad);
 
     static JsonClass jsonClass = new JsonClass();
+
+    private static void displaySyllabus(String courseCode) {
+        Connection con = SyllabusDB.connect();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            String sql = "SELECT * FROM General_Information ORDER BY id DESC LIMIT 1";
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            StringBuilder sb = new StringBuilder();
+            while (rs.next()) {
+                sb.append("Course Name: ").append(rs.getString("courseName")).append("\n");
+                sb.append("Course Code: ").append(rs.getString("courseCode")).append("\n");
+                sb.append("Semester: ").append(rs.getString("semester")).append("\n");
+                sb.append("theoryHour: ").append(rs.getString("theoryHour")).append("\n");
+                sb.append("labHour: ").append(rs.getString("labHour")).append("\n");
+                sb.append("localCredit: ").append(rs.getString("localCredit")).append("\n");
+                sb.append("ects: ").append(rs.getString("ects")).append("\n");
+                sb.append("prerequisites").append(rs.getString("prerequisites")).append("\n");
+                sb.append("courseLanguage: ").append(rs.getString("courseLanguage")).append("\n");
+                sb.append("courseType: ").append(rs.getString("courseType")).append("\n");
+                sb.append("courseLevel: ").append(rs.getString("courseLevel")).append("\n");
+                sb.append("modeOfDelivery: ").append(rs.getString("modeOfDelivery")).append("\n");
+                sb.append("teachingMethod: ").append(rs.getString("teachingMethod")).append("\n");
+                sb.append("courseCoordinator: ").append(rs.getString("courseCoordinator")).append("\n");
+                sb.append("courseLecturer: ").append(rs.getString("courseLecturer")).append("\n");
+                sb.append("assistant: ").append(rs.getString("assistant")).append("\n");
+                sb.append("courseObjectives: ").append(rs.getString("courseObjectives")).append("\n");
+                sb.append("courseDescription: ").append(rs.getString("courseDescription")).append("\n");
+                sb.append("courseCategory: ").append(rs.getString("courseCategory")).append("\n");
+                sb.append("courseBook: ").append(rs.getString("courseBook")).append("\n");
+                sb.append("suggestedMaterials: ").append(rs.getString("suggestedMaterials")).append("\n");
+
+
+
+                sb.append("----------------------\n");
+            }
+
+           resultTextArea.setText(sb.toString());
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+    }
+
+
+
+
 
 
     private void deleteByCourseCode(String courseCode) {
@@ -34,25 +103,24 @@ public class GraphicalUserInterface {
         try {
 
 
-            String deleteEcts_Workload = "DELETE FROM Ects_Workload WHERE id IN (SELECT id FROM WeeklySubjects WHERE courseCode = ?)";
+           String deleteEcts_Workload = "DELETE FROM Ects_Workload WHERE id IN (SELECT id FROM General_Information WHERE courseCode = ?)";
             psEcts_Workload = con.prepareStatement(deleteEcts_Workload);
             psEcts_Workload.setString(1,courseCode);
             psEcts_Workload.executeUpdate();
 
 
-            String deleteWeeklySubjects = "DELETE FROM WeeklySubjects WHERE id IN (SELECT id From WeeklySubjets WHERE courseCode = ?";
+            String deleteWeeklySubjects = "DELETE FROM Weekly_Subjects WHERE id IN (SELECT id FROM General_Information WHERE courseCode = ?)";
             psWeeklySubjects = con.prepareStatement(deleteWeeklySubjects);
             psWeeklySubjects.setString(1,courseCode);
             psWeeklySubjects.executeUpdate();
 
 
-
-            String deletecourse_Outcome = "DELETE FROM course_Outcome WHERE id IN (SELECT id FROM SyllabusDB WHERE courseCode = ?)";
+            String deletecourse_Outcome = "DELETE FROM course_Outcome WHERE id IN (SELECT id FROM General_Information WHERE courseCode = ?)";
             pscourse_Outcome = con.prepareStatement(deletecourse_Outcome);
             pscourse_Outcome.setString(1,courseCode);
             pscourse_Outcome.executeUpdate();
 
-            String deleteAssessments = "DELETE FROM Assesments WHERE id IN (SELECT id FROM SyllabusDB WHERE courseCode = ?)";
+            String deleteAssessments = "DELETE FROM assesment WHERE id IN (SELECT id FROM General_Information WHERE courseCode = ?)";
             psAssessments = con.prepareStatement(deleteAssessments);
             psAssessments.setString(1, courseCode);
             psAssessments.executeUpdate();
@@ -160,7 +228,7 @@ public class GraphicalUserInterface {
 
 
                 System.out.println(semesterActivities);
-                //insert_Assessment(con, semesterActivities, number, weighting, lo1, lo2, lo3, lo4);
+                insert_Assessment(con, semesterActivities, number, weighting, lo1, lo2, lo3, lo4);
             }
             System.out.println("All data has been inserted successfully!");
 
@@ -180,7 +248,7 @@ public class GraphicalUserInterface {
         PreparedStatement ps = null;
 
         try {
-            String sql = "INSERT INTO assessment(semesterActivities, number, weighting, lo1, lo2, lo3, lo4) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO assesment(semesterActivities, number, weighting, lo1, lo2, lo3, lo4) VALUES (?, ?, ?, ?, ?, ?, ?)";
             ps = con.prepareStatement(sql);
             ps.setString(1, semesterActivities );
             ps.setString(2, number);
@@ -217,7 +285,7 @@ public class GraphicalUserInterface {
                 String requiredMaterials = weeklySubjects.getText();
 
                 System.out.println(subject); // ********* TEST this for other parts
-                //insert_WeeklySubject(con, subject, requiredMaterials);
+                insert_WeeklySubject(con, subject, requiredMaterials);
             }
             System.out.println("All data has been inserted successfully!");
 
@@ -236,7 +304,7 @@ public class GraphicalUserInterface {
         PreparedStatement ps = null;
 
         try {
-            String sql = "INSERT INTO weeklySubjects(subject, requiredMaterials) VALUES (?, ?)";
+            String sql = "INSERT INTO Weekly_Subjects(subject, requiredMaterials) VALUES (?, ?)";
             ps = con.prepareStatement(sql);
             ps.setString(1, subject);
             ps.setString(2, requiredMaterials);
@@ -266,7 +334,7 @@ public class GraphicalUserInterface {
                 String contributionLevel = courseOutcome.getText();
 
                 System.out.println(programCompetencies);
-                //insert_courseOutcome(con, number, programCompetencies, contributionLevel);
+                insert_courseOutcome(con, number, programCompetencies, contributionLevel);
             }
             System.out.println("All data has been inserted successfully!");
 
@@ -287,7 +355,7 @@ public class GraphicalUserInterface {
         try {
 
 
-            String sql = "INSERT INTO courseOutcome(number, programCompetencies, contributionLevel) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO course_Outcome(number, programCompetencies, contributionLevel) VALUES (?, ?, ?)";
             ps = con.prepareStatement(sql);
             ps.setString(1, number);
             ps.setString(2, programCompetencies);
@@ -319,7 +387,7 @@ public class GraphicalUserInterface {
                 String workload = workLoad.getText();
 
                 System.out.println(semesterActivities);
-                //insert_workLoad(con, semesterActivities, number, duration, workload);
+                insert_workLoad(con, semesterActivities, number, duration, workload);
             }
             System.out.println("All data has been inserted successfully!");
 
@@ -340,7 +408,7 @@ public class GraphicalUserInterface {
         try {
 
 
-            String sql = "INSERT INTO workLoad(semesterActivities, number, duration, workload) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO Ects_Workload(semesterActivities, number, duration, workload) VALUES (?, ?, ?, ?)";
             ps = con.prepareStatement(sql);
             ps.setString(1, semesterActivities);
             ps.setString(1, number);
@@ -391,16 +459,36 @@ public class GraphicalUserInterface {
         JButton prevVersionsButton = new JButton("Previous Versions");
         JButton saveButton = new JButton("Save");
 
-        JTextArea resultTextArea = new JTextArea(10, 30);
+         resultTextArea = new JTextArea(10, 30);
+
+
         JScrollPane scrollPane = new JScrollPane(resultTextArea);
 
 
+
+
+
         searchButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
-                String searchQuery = searchText.getText();
-                String searchResult = "Syllabus Form for: " + searchQuery + "\nDetails...\n";
-                resultTextArea.setText(searchResult);
+                JDialog searchDialog = new JDialog();
+                searchDialog.setTitle("Search");
+                searchDialog.setSize(300,100);
+                searchDialog.setLayout(new GridLayout(1,2,10,10));
+                JTextField courseCodeField = new JTextField();
+                searchDialog.add(new JLabel("CourseCode: "));
+                searchDialog.add(courseCodeField);
+                JButton searchButton = new JButton("SEARCH ");
+                searchButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String courseCode = courseCodeField.getText();
+                        displaySyllabus(courseCode);
+                        searchDialog.dispose();
+                    }
+                });
+                searchDialog.add(searchButton);
+                searchDialog.setVisible(true);
+
             }
         });
 
@@ -904,7 +992,7 @@ public class GraphicalUserInterface {
                 gui.CourseOutcomeData(jTextContributionLevelArrayList);
 
 
-                //gui.insert_GeneralInformation(courseName,courseCode,semester,theoryHour,labHour,localCredit,ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials);
+                gui.insert_GeneralInformation(courseNameField.getText(),courseCode,semester,theoryHour,labHour,localCredit,ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials);
 
 
 
