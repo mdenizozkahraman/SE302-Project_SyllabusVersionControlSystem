@@ -11,6 +11,16 @@ import java.util.stream.Collectors;
 
 public class GraphicalUserInterface {
 
+    static Assessment assessment = new Assessment();
+    static CourseOutcome courseOutcome = new CourseOutcome();
+    static GeneralInformation generalInformation = new GeneralInformation();
+    static WeeklySubjects weeklySubjects = new WeeklySubjects();
+    static WorkLoad workLoad = new WorkLoad();
+
+    static Syllabus syllabus = new Syllabus(0,assessment,courseOutcome,generalInformation,weeklySubjects,workLoad);
+
+    static JsonClass jsonClass = new JsonClass();
+
 
     private void deleteByCourseCode(String courseCode) {
         Connection con = SyllabusDB.connect();
@@ -453,7 +463,7 @@ public class GraphicalUserInterface {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                showAddForm();
+                jsonClass.json(syllabus);
             }
         });
 
@@ -845,7 +855,7 @@ public class GraphicalUserInterface {
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String courseName = courseNameField.getText();
+                syllabus.getGeneralInformation().setCourseName(courseNameField.getText());
                 String courseCode = courseCodeField.getText();
                 String semester = semesterField.getText();
                 String theoryHour = theoryField.getText();
@@ -871,6 +881,8 @@ public class GraphicalUserInterface {
 
 
                 GraphicalUserInterface gui = new GraphicalUserInterface();
+
+                System.out.println(syllabus.getGeneralInformation().getCourseName());
 
                 gui.WeeklySubjectsData(jTextSubjectFieldArrayList);
                 gui.WeeklySubjectsData(jTextMaterialFieldArrayList);

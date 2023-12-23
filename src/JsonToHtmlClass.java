@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class JsonToHtmlClass {
-    public static void main(String[] args) {
+    public void jsonToHTML() {
         String jsonFilePath = "SyllabusesJsonFile.json";
         String htmlOutputFilePath = "htmlFiles/exportedSyllabus.html";
 

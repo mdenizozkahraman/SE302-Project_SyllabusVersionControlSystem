@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JsonClass {
-    public void addToJSON() {
+    public void json(Syllabus syllabus) {
+
+        JsonToHtmlClass jsonToHtmlClass = new JsonToHtmlClass();
 
         String jsonFilePath = "SyllabusesJsonFile.json";
 
@@ -20,7 +22,7 @@ public class JsonClass {
             JsonNode jsonData = objectMapper.createObjectNode();
 
             JsonNode newCourse = objectMapper.createObjectNode()
-                    .put("courseName", "Test Syllabus Name")
+                    .put("courseName", syllabus.getGeneralInformation().getCourseName())
                     .put("courseCode", "TEST001")
                     .put("semester", "1")
                     .put("theory", "3")
@@ -45,7 +47,7 @@ public class JsonClass {
 
 
             for (int week = 1; week <= 16; week++) {
-                ((ObjectNode) newCourse).put("week" + week + "_subjects", "Subject for Week " + week);
+                ((ObjectNode) newCourse).put("week" + week + "_subjects", "Subjects for Week " + week);
                 ((ObjectNode) newCourse).put("week" + week + "_materials", "Materials for Week " + week);
             }
 
@@ -88,6 +90,8 @@ public class JsonClass {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        jsonToHtmlClass.jsonToHTML();
     }
 
 }
