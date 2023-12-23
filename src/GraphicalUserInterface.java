@@ -14,7 +14,7 @@ public class GraphicalUserInterface {
 
     private void deleteByCourseCode(String courseCode) {
         Connection con = SyllabusDB.connect();
-        PreparedStatement psSyllabusDB = null;
+        PreparedStatement psGeneral_Information = null;
         PreparedStatement psAssessments = null;
         PreparedStatement pscourse_Outcome = null;
         PreparedStatement psWeeklySubjects = null;
@@ -48,18 +48,18 @@ public class GraphicalUserInterface {
             psAssessments.executeUpdate();
 
 
-            String deleteSyllabusDB = "DELETE FROM SyllabusDB WHERE courseCode = ?";
-            psSyllabusDB = con.prepareStatement(deleteSyllabusDB);
-            psSyllabusDB.setString(1, courseCode);
-            psSyllabusDB.executeUpdate();
+            String deleteGeneral_Information = "DELETE FROM General_Information WHERE courseCode = ?";
+            psGeneral_Information = con.prepareStatement(deleteGeneral_Information);
+            psGeneral_Information.setString(1, courseCode);
+            psGeneral_Information.executeUpdate();
 
             System.out.println("Data with Course Code: " + courseCode + " has been deleted successfully.");
         } catch (SQLException e) {
             System.out.println(e.toString());
         } finally {
             try {
-                if (psSyllabusDB != null) {
-                    psSyllabusDB.close();
+                if (psGeneral_Information != null) {
+                    psGeneral_Information.close();
                 }
                 if (psAssessments != null) {
                     psAssessments.close();
