@@ -196,42 +196,7 @@ public class GraphicalUserInterface {
             }
         }
     }
-    /**
-     *  OLD CODE
-     * private void insert_Assesment(String semesterActivites,String number,String weighting,String lo1,String lo2,String lo3,String lo4 ) {
-        Connection con = SyllabusDB.connect();
-        PreparedStatement ps = null;
 
-        try {
-            String sql = "INSERT INTO assesment(semesterActivites,number,weighting,lo1,lo2,lo3,lo4) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            ps = con.prepareStatement(sql);
-            ps.setString(1, semesterActivites);
-            ps.setString(2, number);
-            ps.setString(3, weighting);
-            ps.setString(4, lo1);
-            ps.setString(5, lo2);
-            ps.setString(6, lo3);
-            ps.setString(7, lo4);
-
-
-            ps.execute();
-
-            System.out.println("Data has been inserted successfully.");
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.toString());
-            }
-        }
-    }**/
 
     public void WeeklySubjectsData(ArrayList<JTextField> weeklySubjectsArrayList){
         Connection con = SyllabusDB.connect();
@@ -387,44 +352,6 @@ public class GraphicalUserInterface {
         }
     }
 
-  /*  private void insert_WeeklySubjects(ArrayList<JTextField> a, ArrayList<JTextField> b ) {
-        Connection con = SyllabusDB.connect();
-        PreparedStatement ps = null;
-
-        try {
-            String sql = "INSERT INTO assesment(semesterActivites,number,weighting,lo1,lo2,lo3,lo4) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            ps = con.prepareStatement(sql);
-            ps.setString(1, semesterActivites);
-            ps.setString(2, number);
-            ps.setString(3, weighting);
-            ps.setString(4, lo1);
-            ps.setString(5, lo2);
-            ps.setString(6, lo3);
-            ps.setString(7, lo4);
-
-
-            ps.execute();
-
-            System.out.println("Data has been inserted successfully.");
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.toString());
-            }
-        }
-    }
-*/
-
-
-
 
     public static void main(String[] args) {
 
@@ -468,6 +395,7 @@ public class GraphicalUserInterface {
         });
 
 
+
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -475,10 +403,57 @@ public class GraphicalUserInterface {
             }
         });
 
+        editButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+
+
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                JDialog deleteDialog = new JDialog();
+                deleteDialog.setTitle("Delete Syllabus");
+                deleteDialog.setSize(500, 100);
+                deleteDialog.setLocationRelativeTo(null);
 
+                deleteDialog.setLayout(new GridLayout(1, 2));
+
+                JTextField courseCodeField = new JTextField();
+
+                deleteDialog.add(new JLabel("Course Code:"));
+                deleteDialog.add(courseCodeField);
+
+                JButton deleteButton = new JButton("Delete");
+                deleteButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        String courseCode = courseCodeField.getText();
+
+                        GraphicalUserInterface gui = new GraphicalUserInterface();
+                        gui.deleteByCourseCode(courseCode);
+
+                        deleteDialog.dispose();
+                    }
+                });
+
+                deleteDialog.add(deleteButton);
+                deleteDialog.setVisible(true);
+
+            }
+        });
+
+        prevVersionsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showAddForm();
+            }
+        });
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showAddForm();
             }
         });
 
@@ -666,6 +641,13 @@ public class GraphicalUserInterface {
 
 
         ArrayList<JTextField> jTextSemesterActivityFieldArrayList = new ArrayList<>();
+        ArrayList<JTextField> jTextNumberFieldArrayList = new ArrayList<>();
+        ArrayList<JTextField> jTextWeightingFieldArrayList = new ArrayList<>();
+        ArrayList<JTextField> jTextLO1FieldArrayList = new ArrayList<>();
+        ArrayList<JTextField> jTextLO2FieldArrayList = new ArrayList<>();
+        ArrayList<JTextField> jTextLO3FieldArrayList = new ArrayList<>();
+        ArrayList<JTextField> jTextLO4FieldArrayList = new ArrayList<>();
+
 
 
         JPanel assesmentPanel = new JPanel();
@@ -694,7 +676,7 @@ public class GraphicalUserInterface {
 
             semesterActivityField.setText(semesterActivities[row-1]);
 
-            jTextSemesterActivityFieldArrayList.add(semesterActivityField);
+
 
 
             JLabel numberLabel = new JLabel("Number " + row + ":");
@@ -709,6 +691,14 @@ public class GraphicalUserInterface {
             JTextField lo3Field = new JTextField();
             JLabel lo4Label = new JLabel("LO4 " + row + ":");
             JTextField lo4Field = new JTextField();
+
+            jTextSemesterActivityFieldArrayList.add(semesterActivityField);
+            jTextNumberFieldArrayList.add(numberField);
+            jTextWeightingFieldArrayList.add(weightingField);
+            jTextLO1FieldArrayList.add(lo1Field);
+            jTextLO2FieldArrayList.add(lo2Field);
+            jTextLO3FieldArrayList.add(lo3Field);
+            jTextLO4FieldArrayList.add(lo4Field);
 
             assesmentPanel.add(semesterActivityLabel);
             assesmentPanel.add(semesterActivityField);
@@ -728,6 +718,10 @@ public class GraphicalUserInterface {
         }
 
         ArrayList<JTextField> jTextSemesterActivityFieldCourseOutcomeArrayList = new ArrayList<>();
+        ArrayList<JTextField> jTextNumberFieldCourseOutcomeArrayList = new ArrayList<>();
+        ArrayList<JTextField> jTextDurationFieldCourseOutcomeArrayList = new ArrayList<>();
+        ArrayList<JTextField> jTextWorkloadFieldCourseOutcomeArrayList = new ArrayList<>();
+
 
         JPanel ectsWorkloadPanel = new JPanel();
         ectsWorkloadPanel.setLayout(new GridLayout(14, 4));
@@ -756,7 +750,7 @@ public class GraphicalUserInterface {
 
             semesterActivityField.setText(semesterActivities[row-1]);
 
-            jTextSemesterActivityFieldCourseOutcomeArrayList.add(semesterActivityField);
+
 
 
             JLabel numberLabel = new JLabel("Number " + row + ":");
@@ -773,6 +767,11 @@ public class GraphicalUserInterface {
                 durationField.setEditable(false);
             }
 
+            jTextSemesterActivityFieldCourseOutcomeArrayList.add(semesterActivityField);
+            jTextNumberFieldCourseOutcomeArrayList.add(numberField);
+            jTextDurationFieldCourseOutcomeArrayList.add(durationField);
+            jTextWorkloadFieldCourseOutcomeArrayList.add(workloadField);
+
             ectsWorkloadPanel.add(semesterActivityLabel);
             ectsWorkloadPanel.add(semesterActivityField);
             ectsWorkloadPanel.add(numberLabel);
@@ -783,7 +782,8 @@ public class GraphicalUserInterface {
             ectsWorkloadPanel.add(workloadField);
         }
 
-        ArrayList<JTextField> jTextCourseOutcomeArrayList = new ArrayList<>();
+        ArrayList<JTextField> jTextProgramCompetenciesArrayList = new ArrayList<>();
+        ArrayList<JTextField> jTextContributionLevelArrayList = new ArrayList<>();
 
 
         JPanel programOutcomePanel = new JPanel();
@@ -814,10 +814,14 @@ public class GraphicalUserInterface {
 
             programCompetenciesField.setText(programCompetencies[row-1]);
 
-            jTextCourseOutcomeArrayList.add(programCompetenciesField);
+
 
             JLabel contributionLevelLabel = new JLabel("Contribution Level " + row + ":");
             JTextField contributionLevelField = new JTextField();
+
+            jTextProgramCompetenciesArrayList.add(programCompetenciesField);
+            jTextContributionLevelArrayList.add(contributionLevelField);
+
 
             programOutcomePanel.add(programCompetenciesLabel);
             programOutcomePanel.add(programCompetenciesField);
@@ -869,15 +873,26 @@ public class GraphicalUserInterface {
                 GraphicalUserInterface gui = new GraphicalUserInterface();
 
                 gui.WeeklySubjectsData(jTextSubjectFieldArrayList);
+                gui.WeeklySubjectsData(jTextMaterialFieldArrayList);
                 System.out.println("------------------------------");
                 gui.AssessmentData(jTextSemesterActivityFieldArrayList);
+                gui.AssessmentData(jTextNumberFieldArrayList);
+                gui.AssessmentData(jTextWeightingFieldArrayList);
+                gui.AssessmentData(jTextLO1FieldArrayList);
+                gui.AssessmentData(jTextLO2FieldArrayList);
+                gui.AssessmentData(jTextLO3FieldArrayList);
+                gui.AssessmentData(jTextLO4FieldArrayList);
                 System.out.println("------------------------------");
                 gui.WorkLoadData(jTextSemesterActivityFieldCourseOutcomeArrayList);
+                gui.WorkLoadData(jTextNumberFieldCourseOutcomeArrayList);
+                gui.WorkLoadData(jTextDurationFieldCourseOutcomeArrayList);
+                gui.WorkLoadData(jTextWorkloadFieldCourseOutcomeArrayList);
                 System.out.println("------------------------------");
-                gui.CourseOutcomeData(jTextCourseOutcomeArrayList);
+                gui.CourseOutcomeData(jTextProgramCompetenciesArrayList);
+                gui.CourseOutcomeData(jTextContributionLevelArrayList);
 
 
-                gui.insert_GeneralInformation(courseName,courseCode,semester,theoryHour,labHour,localCredit,ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials);
+                //gui.insert_GeneralInformation(courseName,courseCode,semester,theoryHour,labHour,localCredit,ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials);
 
 
 
