@@ -61,22 +61,22 @@ public class GraphicalUserInterface {
         }
     }
 
-    public void AssessmentData(ArrayList<Assessment> assessmentArrayList){
+    public void AssessmentData(ArrayList<JTextField> assessmentArrayList){
         Connection con = SyllabusDB.connect();
 
         try {
-            for (Assessment assessment : assessmentArrayList ){
-                String semesterActivities = assessment.getSemesterActivities();
-                int number  = assessment.getNumber();
-                int weighting = assessment.getWeighting();
-                int lo1 = assessment.getLo1();
-                int lo2 = assessment.getLo2();
-                int lo3 = assessment.getLo3();
-                int lo4 = assessment.getLo4();
+            for (JTextField assessment : assessmentArrayList ){
+                String semesterActivities = assessment.getText();
+                String number  = assessment.getText();
+                String weighting = assessment.getText();
+                String lo1 = assessment.getText();
+                String lo2 = assessment.getText();
+                String lo3 = assessment.getText();
+                String lo4 = assessment.getText();
 
 
-
-                insert_Assessment(con, semesterActivities, number, weighting, lo1, lo2, lo3, lo4);
+                System.out.println(semesterActivities);
+                //insert_Assessment(con, semesterActivities, number, weighting, lo1, lo2, lo3, lo4);
             }
             System.out.println("All data has been inserted successfully!");
 
@@ -92,19 +92,19 @@ public class GraphicalUserInterface {
         }
     }
 
-    private void insert_Assessment(Connection con, String semesterActivities, int number,int weighting, int lo1, int lo2, int lo3, int lo4){
+    private void insert_Assessment(Connection con, String semesterActivities, String number,String weighting, String lo1, String lo2, String lo3, String lo4){
         PreparedStatement ps = null;
 
         try {
             String sql = "INSERT INTO assessment(semesterActivities, number, weighting, lo1, lo2, lo3, lo4) VALUES (?, ?, ?, ?, ?, ?, ?)";
             ps = con.prepareStatement(sql);
             ps.setString(1, semesterActivities );
-            ps.setInt(2, number);
-            ps.setInt(3, weighting);
-            ps.setInt(4, lo1);
-            ps.setInt(5, lo2);
-            ps.setInt(6, lo3);
-            ps.setInt(7, lo4);
+            ps.setString(2, number);
+            ps.setString(3, weighting);
+            ps.setString(4, lo1);
+            ps.setString(5, lo2);
+            ps.setString(6, lo3);
+            ps.setString(7, lo4);
 
 
 
@@ -159,16 +159,16 @@ public class GraphicalUserInterface {
         }
     }**/
 
-    public void WeeklySubjectsData(ArrayList<WeeklySubjects> weeklySubjectsArrayList){
+    public void WeeklySubjectsData(ArrayList<JTextField> weeklySubjectsArrayList){
         Connection con = SyllabusDB.connect();
 
         try {
-            for (WeeklySubjects weeklySubjects : weeklySubjectsArrayList){
-                String subject = weeklySubjects.getSubject();
-                String requiredMaterials = weeklySubjects.getRequiredMaterials();
+            for (JTextField weeklySubjects : weeklySubjectsArrayList){
+                String subject = weeklySubjects.getText();
+                String requiredMaterials = weeklySubjects.getText();
 
-
-                insert_WeeklySubject(con, subject, requiredMaterials);
+                System.out.println(subject); // ********* TEST this for other parts
+                //insert_WeeklySubject(con, subject, requiredMaterials);
             }
             System.out.println("All data has been inserted successfully!");
 
@@ -207,17 +207,17 @@ public class GraphicalUserInterface {
         }
     }
 
-    public void CourseOutcomeData(ArrayList<CourseOutcome> courseOutcomeArrayList){
+    public void CourseOutcomeData(ArrayList<JTextField> courseOutcomeArrayList){
         Connection con = SyllabusDB.connect();
 
         try {
-            for (CourseOutcome courseOutcome : courseOutcomeArrayList){
-                int number  = courseOutcome.getNumber();
-                String programCompetencies = courseOutcome.getProgramCompetencies();
-                int contributionLevel[] = courseOutcome.getContributionLevel();
+            for (JTextField courseOutcome : courseOutcomeArrayList){
+                String number  = courseOutcome.getText();
+                String programCompetencies = courseOutcome.getText();
+                String contributionLevel = courseOutcome.getText();
 
-
-                insert_courseOutcome(con, number, programCompetencies, contributionLevel);
+                System.out.println(programCompetencies);
+                //insert_courseOutcome(con, number, programCompetencies, contributionLevel);
             }
             System.out.println("All data has been inserted successfully!");
 
@@ -232,19 +232,17 @@ public class GraphicalUserInterface {
             }
         }
     }
-    private void insert_courseOutcome(Connection con, int number, String programCompetencies, int[] contributionLevel){
+    private void insert_courseOutcome(Connection con, String number, String programCompetencies, String contributionLevel){
         PreparedStatement ps = null;
 
         try {
 
-            String contributionLevelString = Arrays.stream(contributionLevel)
-                    .mapToObj(String :: valueOf)
-                    .collect(Collectors.joining(","));
+
             String sql = "INSERT INTO courseOutcome(number, programCompetencies, contributionLevel) VALUES (?, ?, ?)";
             ps = con.prepareStatement(sql);
-            ps.setInt(1, number);
+            ps.setString(1, number);
             ps.setString(2, programCompetencies);
-            ps.setString(3, contributionLevelString);
+            ps.setString(3, contributionLevel);
 
 
             ps.executeUpdate();
@@ -308,6 +306,13 @@ public class GraphicalUserInterface {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showAddForm();
+            }
+        });
+
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
 
@@ -494,6 +499,8 @@ public class GraphicalUserInterface {
         }
 
 
+        ArrayList<JTextField> jTextSemesterActivityFieldArrayList = new ArrayList<>();
+
 
         JPanel assesmentPanel = new JPanel();
         assesmentPanel.setLayout(new GridLayout(13, 6));
@@ -520,6 +527,8 @@ public class GraphicalUserInterface {
             JTextField semesterActivityField = new JTextField();
 
             semesterActivityField.setText(semesterActivities[row-1]);
+
+            jTextSemesterActivityFieldArrayList.add(semesterActivityField);
 
 
             JLabel numberLabel = new JLabel("Number " + row + ":");
@@ -552,6 +561,8 @@ public class GraphicalUserInterface {
 
         }
 
+        ArrayList<JTextField> jTextSemesterActivityFieldCourseOutcomeArrayList = new ArrayList<>();
+
         JPanel ectsWorkloadPanel = new JPanel();
         ectsWorkloadPanel.setLayout(new GridLayout(14, 4));
 
@@ -579,6 +590,9 @@ public class GraphicalUserInterface {
 
             semesterActivityField.setText(semesterActivities[row-1]);
 
+            jTextSemesterActivityFieldCourseOutcomeArrayList.add(semesterActivityField);
+
+
             JLabel numberLabel = new JLabel("Number " + row + ":");
             JTextField numberField = new JTextField();
             JLabel durationLabel = new JLabel("Duration " + row + ":");
@@ -603,6 +617,9 @@ public class GraphicalUserInterface {
             ectsWorkloadPanel.add(workloadField);
         }
 
+        ArrayList<JTextField> jTextCourseOutcomeArrayList = new ArrayList<>();
+
+
         JPanel programOutcomePanel = new JPanel();
         programOutcomePanel.setLayout(new GridLayout(13, 3));
 
@@ -624,10 +641,14 @@ public class GraphicalUserInterface {
                     "To recognize the need for lifelong learning; to be able to access information, to be able to stay current with developments in science and technology; to be able to relate the knowledge accumulated throughout the human history to Computer Engineering."
             };
 
+
+
             JLabel programCompetenciesLabel = new JLabel("Program Competencies " + row + ":");
             JTextField programCompetenciesField = new JTextField();
 
             programCompetenciesField.setText(programCompetencies[row-1]);
+
+            jTextCourseOutcomeArrayList.add(programCompetenciesField);
 
             JLabel contributionLevelLabel = new JLabel("Contribution Level " + row + ":");
             JTextField contributionLevelField = new JTextField();
@@ -678,14 +699,14 @@ public class GraphicalUserInterface {
                 String suggestedMaterials = suggestedMaterialsField.getText();
 
 
-                for (int i = 0; i < 16; i++){
-                    System.out.println(jTextSubjectFieldArrayList.get(i).getText());
-                    System.out.println(jTextMaterialFieldArrayList.get(i).getText());
-                }
-
 
                 GraphicalUserInterface gui = new GraphicalUserInterface();
 
+                gui.WeeklySubjectsData(jTextSubjectFieldArrayList);
+                System.out.println("------------------------------");
+                gui.AssessmentData(jTextSemesterActivityFieldArrayList);
+                System.out.println("------------------------------");
+                gui.CourseOutcomeData(jTextCourseOutcomeArrayList);
 
 
                // gui.insert_GeneralInformation(courseName,courseCode,semester,theoryHour,labHour,localCredit,ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials);
