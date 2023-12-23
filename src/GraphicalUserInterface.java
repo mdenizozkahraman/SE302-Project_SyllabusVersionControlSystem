@@ -993,7 +993,7 @@ public class GraphicalUserInterface {
                 gui.CourseOutcomeData(jTextContributionLevelArrayList);
 
 
-                gui.insert_GeneralInformation(courseNameField.getText(),courseCode,semester,theoryHour,labHour,localCredit,ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials);
+                //gui.insert_GeneralInformation(courseNameField.getText(),courseCode,semester,theoryHour,labHour,localCredit,ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials);
 
 
 
