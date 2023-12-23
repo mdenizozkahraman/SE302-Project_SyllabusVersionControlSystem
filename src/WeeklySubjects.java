@@ -1,8 +1,8 @@
 public class WeeklySubjects {
-    private int week;
+    private String week;
     private String subject, requiredMaterials, courseNotes, suggestedReadings;
 
-    public WeeklySubjects(int week, String subject, String requiredMaterials, String courseNotes, String suggestedReadings) {
+    public WeeklySubjects(String week, String subject, String requiredMaterials, String courseNotes, String suggestedReadings) {
         this.week = week;
         this.subject = subject;
         this.requiredMaterials = requiredMaterials;
@@ -14,11 +14,11 @@ public class WeeklySubjects {
 
     }
 
-    public int getWeek() {
+    public String getWeek() {
         return week;
     }
 
-    public void setWeek(int week) {
+    public void setWeek(String week) {
         this.week = week;
     }
 

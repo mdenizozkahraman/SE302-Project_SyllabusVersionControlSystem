@@ -1,8 +1,8 @@
 public class WorkLoad {
     private String semesterActivities;
-    private int number, duration, workload;
+    private String number, duration, workload;
 
-    public WorkLoad(String semesterActivities, int number, int duration, int workload) {
+    public WorkLoad(String semesterActivities, String number, String duration, String workload) {
         this.semesterActivities = semesterActivities;
         this.number = number;
         this.duration = duration;
@@ -21,27 +21,27 @@ public class WorkLoad {
         this.semesterActivities = semesterActivities;
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
-    public int getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 
-    public int getWorkload() {
+    public String getWorkload() {
         return workload;
     }
 
-    public void setWorkload(int workload) {
+    public void setWorkload(String workload) {
         this.workload = workload;
     }
 }
