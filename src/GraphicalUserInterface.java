@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class GraphicalUserInterface {
 
@@ -58,7 +60,71 @@ public class GraphicalUserInterface {
             }
         }
     }
-    private void insert_Assesment(String semesterActivites,String number,String weighting,String lo1,String lo2,String lo3,String lo4 ) {
+
+    public void AssessmentData(ArrayList<Assessment> assessmentArrayList){
+        Connection con = SyllabusDB.connect();
+
+        try {
+            for (Assessment assessment : assessmentArrayList ){
+                String semesterActivities = assessment.getSemesterActivities();
+                int number  = assessment.getNumber();
+                int weighting = assessment.getWeighting();
+                int lo1 = assessment.getLo1();
+                int lo2 = assessment.getLo2();
+                int lo3 = assessment.getLo3();
+                int lo4 = assessment.getLo4();
+
+
+
+                insert_Assessment(con, semesterActivities, number, weighting, lo1, lo2, lo3, lo4);
+            }
+            System.out.println("All data has been inserted successfully!");
+
+        }
+        finally {
+            try {
+                if (con != null){
+                    con.close();
+                }
+            } catch (SQLException ex){
+                System.out.println(ex.toString());
+            }
+        }
+    }
+
+    private void insert_Assessment(Connection con, String semesterActivities, int number,int weighting, int lo1, int lo2, int lo3, int lo4){
+        PreparedStatement ps = null;
+
+        try {
+            String sql = "INSERT INTO assessment(semesterActivities, number, weighting, lo1, lo2, lo3, lo4) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, semesterActivities );
+            ps.setInt(2, number);
+            ps.setInt(3, weighting);
+            ps.setInt(4, lo1);
+            ps.setInt(5, lo2);
+            ps.setInt(6, lo3);
+            ps.setInt(7, lo4);
+
+
+
+
+            ps.executeUpdate();
+        }catch (SQLException e){
+            System.out.println(e.toString());
+        } finally {
+            try {
+                if (ps != null){
+                    ps.close();
+                }
+            }catch (SQLException ex){
+                System.out.println(ex.toString());
+            }
+        }
+    }
+    /**
+     *  OLD CODE
+     * private void insert_Assesment(String semesterActivites,String number,String weighting,String lo1,String lo2,String lo3,String lo4 ) {
         Connection con = SyllabusDB.connect();
         PreparedStatement ps = null;
 
@@ -88,6 +154,108 @@ public class GraphicalUserInterface {
                     con.close();
                 }
             } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+    }**/
+
+    public void WeeklySubjectsData(ArrayList<WeeklySubjects> weeklySubjectsArrayList){
+        Connection con = SyllabusDB.connect();
+
+        try {
+            for (WeeklySubjects weeklySubjects : weeklySubjectsArrayList){
+                String subject = weeklySubjects.getSubject();
+                String requiredMaterials = weeklySubjects.getRequiredMaterials();
+
+
+                insert_WeeklySubject(con, subject, requiredMaterials);
+            }
+            System.out.println("All data has been inserted successfully!");
+
+        }
+        finally {
+            try {
+                if (con != null){
+                    con.close();
+                }
+            } catch (SQLException ex){
+                System.out.println(ex.toString());
+            }
+        }
+    }
+    private void insert_WeeklySubject(Connection con, String subject, String requiredMaterials){
+        PreparedStatement ps = null;
+
+        try {
+            String sql = "INSERT INTO weeklySubjects(subject, requiredMaterials) VALUES (?, ?)";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, subject);
+            ps.setString(2, requiredMaterials);
+
+
+            ps.executeUpdate();
+        }catch (SQLException e){
+            System.out.println(e.toString());
+        } finally {
+            try {
+                if (ps != null){
+                    ps.close();
+                }
+            }catch (SQLException ex){
+                System.out.println(ex.toString());
+            }
+        }
+    }
+
+    public void CourseOutcomeData(ArrayList<CourseOutcome> courseOutcomeArrayList){
+        Connection con = SyllabusDB.connect();
+
+        try {
+            for (CourseOutcome courseOutcome : courseOutcomeArrayList){
+                int number  = courseOutcome.getNumber();
+                String programCompetencies = courseOutcome.getProgramCompetencies();
+                int contributionLevel[] = courseOutcome.getContributionLevel();
+
+
+                insert_courseOutcome(con, number, programCompetencies, contributionLevel);
+            }
+            System.out.println("All data has been inserted successfully!");
+
+        }
+        finally {
+            try {
+                if (con != null){
+                    con.close();
+                }
+            } catch (SQLException ex){
+                System.out.println(ex.toString());
+            }
+        }
+    }
+    private void insert_courseOutcome(Connection con, int number, String programCompetencies, int[] contributionLevel){
+        PreparedStatement ps = null;
+
+        try {
+
+            String contributionLevelString = Arrays.stream(contributionLevel)
+                    .mapToObj(String :: valueOf)
+                    .collect(Collectors.joining(","));
+            String sql = "INSERT INTO courseOutcome(number, programCompetencies, contributionLevel) VALUES (?, ?, ?)";
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, number);
+            ps.setString(2, programCompetencies);
+            ps.setString(3, contributionLevelString);
+
+
+            ps.executeUpdate();
+        }catch (SQLException e){
+            System.out.println(e.toString());
+        } finally {
+            try {
+                if (ps != null){
+                    ps.close();
+                }
+            }catch (SQLException ex){
                 System.out.println(ex.toString());
             }
         }

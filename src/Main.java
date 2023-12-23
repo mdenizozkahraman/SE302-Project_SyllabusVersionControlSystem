@@ -18,7 +18,6 @@ public class Main {
 
         Syllabus syllabus = new Syllabus(0, assessment, courseOutcome, generalInformation, weeklySubjects, workLoad);
 
-        System.out.println(syllabus.getGeneralInformation().getCourseName());
 
 
     }
