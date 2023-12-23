@@ -11,6 +11,80 @@ import java.util.stream.Collectors;
 
 public class GraphicalUserInterface {
 
+
+    private void deleteByCourseCode(String courseCode) {
+        Connection con = SyllabusDB.connect();
+        PreparedStatement psSyllabusDB = null;
+        PreparedStatement psAssessments = null;
+        PreparedStatement pscourse_Outcome = null;
+        PreparedStatement psWeeklySubjects = null;
+        PreparedStatement psEcts_Workload = null;
+
+
+        try {
+
+
+            String deleteEcts_Workload = "DELETE FROM Ects_Workload WHERE id IN (SELECT id FROM WeeklySubjects WHERE courseCode = ?)";
+            psEcts_Workload = con.prepareStatement(deleteEcts_Workload);
+            psEcts_Workload.setString(1,courseCode);
+            psEcts_Workload.executeUpdate();
+
+
+            String deleteWeeklySubjects = "DELETE FROM WeeklySubjects WHERE id IN (SELECT id From WeeklySubjets WHERE courseCode = ?";
+            psWeeklySubjects = con.prepareStatement(deleteWeeklySubjects);
+            psWeeklySubjects.setString(1,courseCode);
+            psWeeklySubjects.executeUpdate();
+
+
+
+            String deletecourse_Outcome = "DELETE FROM course_Outcome WHERE id IN (SELECT id FROM SyllabusDB WHERE courseCode = ?)";
+            pscourse_Outcome = con.prepareStatement(deletecourse_Outcome);
+            pscourse_Outcome.setString(1,courseCode);
+            pscourse_Outcome.executeUpdate();
+
+            String deleteAssessments = "DELETE FROM Assesments WHERE id IN (SELECT id FROM SyllabusDB WHERE courseCode = ?)";
+            psAssessments = con.prepareStatement(deleteAssessments);
+            psAssessments.setString(1, courseCode);
+            psAssessments.executeUpdate();
+
+
+            String deleteSyllabusDB = "DELETE FROM SyllabusDB WHERE courseCode = ?";
+            psSyllabusDB = con.prepareStatement(deleteSyllabusDB);
+            psSyllabusDB.setString(1, courseCode);
+            psSyllabusDB.executeUpdate();
+
+            System.out.println("Data with Course Code: " + courseCode + " has been deleted successfully.");
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } finally {
+            try {
+                if (psSyllabusDB != null) {
+                    psSyllabusDB.close();
+                }
+                if (psAssessments != null) {
+                    psAssessments.close();
+                }
+                if(pscourse_Outcome != null){
+                    pscourse_Outcome.close();
+                }
+                if(psWeeklySubjects != null){
+                    psWeeklySubjects.close();
+                }
+                if(psEcts_Workload != null){
+                    psEcts_Workload.close();
+                }
+
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+    }
+
+
+
     private void insert_GeneralInformation(String courseName, String courseCode, String semester, String theoryHour, String labHour, String localCredit, String ects,String prerequisites,String courseLanguage,String courseType,String courseLevel,String modeOfDelivery,String teachingMethod,String courseCoordinator,String courseLecturer,String assistant ,String courseObjectives, String learningOutcomes,String courseDescription,String courseCategory,String courseBook,String suggestedMaterials) {
         Connection con = SyllabusDB.connect();
         PreparedStatement ps = null;
@@ -312,6 +386,42 @@ public class GraphicalUserInterface {
             }
         }
     }
+
+  /*  private void insert_WeeklySubjects(ArrayList<JTextField> a, ArrayList<JTextField> b ) {
+        Connection con = SyllabusDB.connect();
+        PreparedStatement ps = null;
+
+        try {
+            String sql = "INSERT INTO assesment(semesterActivites,number,weighting,lo1,lo2,lo3,lo4) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, semesterActivites);
+            ps.setString(2, number);
+            ps.setString(3, weighting);
+            ps.setString(4, lo1);
+            ps.setString(5, lo2);
+            ps.setString(6, lo3);
+            ps.setString(7, lo4);
+
+
+            ps.execute();
+
+            System.out.println("Data has been inserted successfully.");
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+    }
+*/
 
 
 
@@ -767,7 +877,7 @@ public class GraphicalUserInterface {
                 gui.CourseOutcomeData(jTextCourseOutcomeArrayList);
 
 
-               // gui.insert_GeneralInformation(courseName,courseCode,semester,theoryHour,labHour,localCredit,ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials);
+                gui.insert_GeneralInformation(courseName,courseCode,semester,theoryHour,labHour,localCredit,ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials);
 
 
 
