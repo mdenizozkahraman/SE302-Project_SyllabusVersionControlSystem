@@ -259,6 +259,62 @@ public class GraphicalUserInterface {
         }
     }
 
+    public void WorkLoadData(ArrayList<JTextField> workLoadArrayList){
+        Connection con = SyllabusDB.connect();
+
+        try {
+            for (JTextField workLoad : workLoadArrayList){
+                String semesterActivities  = workLoad.getText();
+                String number = workLoad.getText();
+                String duration = workLoad.getText();
+                String workload = workLoad.getText();
+
+                System.out.println(semesterActivities);
+                //insert_workLoad(con, semesterActivities, number, duration, workload);
+            }
+            System.out.println("All data has been inserted successfully!");
+
+        }
+        finally {
+            try {
+                if (con != null){
+                    con.close();
+                }
+            } catch (SQLException ex){
+                System.out.println(ex.toString());
+            }
+        }
+    }
+    private void insert_workLoad(Connection con,String semesterActivities,  String number, String duration, String workload){
+        PreparedStatement ps = null;
+
+        try {
+
+
+            String sql = "INSERT INTO workLoad(semesterActivities, number, duration, workload) VALUES (?, ?, ?, ?)";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, semesterActivities);
+            ps.setString(1, number);
+            ps.setString(2, duration);
+            ps.setString(3, workload);
+
+
+            ps.executeUpdate();
+        }catch (SQLException e){
+            System.out.println(e.toString());
+        } finally {
+            try {
+                if (ps != null){
+                    ps.close();
+                }
+            }catch (SQLException ex){
+                System.out.println(ex.toString());
+            }
+        }
+    }
+
+
+
 
     public static void main(String[] args) {
 
@@ -705,6 +761,8 @@ public class GraphicalUserInterface {
                 gui.WeeklySubjectsData(jTextSubjectFieldArrayList);
                 System.out.println("------------------------------");
                 gui.AssessmentData(jTextSemesterActivityFieldArrayList);
+                System.out.println("------------------------------");
+                gui.WorkLoadData(jTextSemesterActivityFieldCourseOutcomeArrayList);
                 System.out.println("------------------------------");
                 gui.CourseOutcomeData(jTextCourseOutcomeArrayList);
 
