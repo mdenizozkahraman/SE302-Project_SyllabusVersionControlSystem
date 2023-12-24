@@ -80,6 +80,8 @@ public class GraphicalUserInterface {
 
     private static JTextArea textArea2;
 
+    private static JTextArea textArea1;
+
 
     static Assessment assessment = new Assessment();
     static CourseOutcome courseOutcome = new CourseOutcome();
@@ -90,6 +92,69 @@ public class GraphicalUserInterface {
     static Syllabus syllabus = new Syllabus(0,assessment,courseOutcome,generalInformation,weeklySubjects,workLoad);
 
     static JsonClass jsonClass;
+
+
+    private static void displayPreviousSyllabus(String courseCode) {
+        Connection con = SyllabusDB.connect();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            String sql = "SELECT * FROM General_Information WHERE courseCode = ? ORDER BY id DESC LIMIT 1 OFFSET 1";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, courseCode);
+            rs = ps.executeQuery();
+
+            StringBuilder sb = new StringBuilder();
+            while (rs.next()) {
+                sb.append("Course Name: ").append(rs.getString("courseName")).append("\n");
+                sb.append("Course Code: ").append(rs.getString("courseCode")).append("\n");
+                sb.append("Semester: ").append(rs.getString("semester")).append("\n");
+                sb.append("theoryHour: ").append(rs.getString("theoryHour")).append("\n");
+                sb.append("labHour: ").append(rs.getString("labHour")).append("\n");
+                sb.append("localCredit: ").append(rs.getString("localCredit")).append("\n");
+                sb.append("ects: ").append(rs.getString("ects")).append("\n");
+                sb.append("prerequisites").append(rs.getString("prerequisites")).append("\n");
+                sb.append("courseLanguage: ").append(rs.getString("courseLanguage")).append("\n");
+                sb.append("courseType: ").append(rs.getString("courseType")).append("\n");
+                sb.append("courseLevel: ").append(rs.getString("courseLevel")).append("\n");
+                sb.append("modeOfDelivery: ").append(rs.getString("modeOfDelivery")).append("\n");
+                sb.append("teachingMethod: ").append(rs.getString("teachingMethod")).append("\n");
+                sb.append("courseCoordinator: ").append(rs.getString("courseCoordinator")).append("\n");
+                sb.append("courseLecturer: ").append(rs.getString("courseLecturer")).append("\n");
+                sb.append("assistant: ").append(rs.getString("assistant")).append("\n");
+                sb.append("courseObjectives: ").append(rs.getString("courseObjectives")).append("\n");
+                sb.append("courseDescription: ").append(rs.getString("courseDescription")).append("\n");
+                sb.append("courseCategory: ").append(rs.getString("courseCategory")).append("\n");
+                sb.append("courseBook: ").append(rs.getString("courseBook")).append("\n");
+                sb.append("suggestedMaterials: ").append(rs.getString("suggestedMaterials")).append("\n");
+                sb.append("Editor: ").append(rs.getString("Editor")).append("\n");
+                sb.append("Reason: ").append(rs.getString("Reason")).append("\n");
+
+
+
+                sb.append("----------------------\n");
+            }
+
+            textArea1.setText(sb.toString());
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+    }
 
 
     private static void displayLastSyllabus(String courseCode) {
@@ -126,6 +191,8 @@ public class GraphicalUserInterface {
                 sb.append("courseCategory: ").append(rs.getString("courseCategory")).append("\n");
                 sb.append("courseBook: ").append(rs.getString("courseBook")).append("\n");
                 sb.append("suggestedMaterials: ").append(rs.getString("suggestedMaterials")).append("\n");
+                sb.append("Editor: ").append(rs.getString("Editor")).append("\n");
+                sb.append("Reason: ").append(rs.getString("Reason")).append("\n");
 
 
 
@@ -188,7 +255,8 @@ public class GraphicalUserInterface {
                 sb.append("courseCategory: ").append(rs.getString("courseCategory")).append("\n");
                 sb.append("courseBook: ").append(rs.getString("courseBook")).append("\n");
                 sb.append("suggestedMaterials: ").append(rs.getString("suggestedMaterials")).append("\n");
-
+                sb.append("Editor: ").append(rs.getString("Editor")).append("\n");
+                sb.append("Reason: ").append(rs.getString("Reason")).append("\n");
 
 
                 sb.append("----------------------\n");
@@ -291,12 +359,12 @@ public class GraphicalUserInterface {
 
 
 
-    private void insert_GeneralInformation(String courseName, String courseCode, String semester, String theoryHour, String labHour, String localCredit, String ects,String prerequisites,String courseLanguage,String courseType,String courseLevel,String modeOfDelivery,String teachingMethod,String courseCoordinator,String courseLecturer,String assistant ,String courseObjectives, String learningOutcomes,String courseDescription,String courseCategory,String courseBook,String suggestedMaterials) {
+    private void insert_GeneralInformation(String courseName, String courseCode, String semester, String theoryHour, String labHour, String localCredit, String ects,String prerequisites,String courseLanguage,String courseType,String courseLevel,String modeOfDelivery,String teachingMethod,String courseCoordinator,String courseLecturer,String assistant ,String courseObjectives, String learningOutcomes,String courseDescription,String courseCategory,String courseBook,String suggestedMaterials,String Editor,String Reason) {
         Connection con = SyllabusDB.connect();
         PreparedStatement ps = null;
 
         try {
-            String sql = "INSERT INTO General_Information (courseName, courseCode, semester, theoryHour, labHour, localCredit, ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials) VALUES (?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?,?,?)";
+            String sql = "INSERT INTO General_Information (courseName, courseCode, semester, theoryHour, labHour, localCredit, ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials,Editor,Reason) VALUES (?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?,?,?,?,?)";
             ps = con.prepareStatement(sql);
             ps.setString(1, courseName);
             ps.setString(2, courseCode);
@@ -320,6 +388,8 @@ public class GraphicalUserInterface {
             ps.setString(20,courseCategory);
             ps.setString(21,courseBook);
             ps.setString(22,suggestedMaterials);
+            ps.setString(23,Editor);
+            ps.setString(24,Reason);
 
 
             ps.execute();
@@ -685,7 +755,7 @@ public class GraphicalUserInterface {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                     String courseCode = searchField.getText();
-
+                        displayPreviousSyllabus(courseCode);
                         displayLastSyllabus(courseCode);
                     }
                 });
@@ -693,7 +763,7 @@ public class GraphicalUserInterface {
 
 
                 JPanel centerPanel = new JPanel(new GridLayout(1, 2));
-                JTextArea textArea1 = new JTextArea();
+                textArea1 = new JTextArea();
                 textArea1.append("Previous Versions");
                 textArea2 = new JTextArea();
                 textArea2.append("Latest Version");
@@ -701,10 +771,7 @@ public class GraphicalUserInterface {
                 centerPanel.add(new JScrollPane(textArea2));
 
                 JPanel bottomPanel = new JPanel();
-                JButton previousButton = new JButton("Previous");
-                JButton nextButton = new JButton("Next");
-                bottomPanel.add(previousButton);
-                bottomPanel.add(nextButton);
+
 
 
 
@@ -771,7 +838,7 @@ public class GraphicalUserInterface {
 
 
         JPanel generalInfoPanel = new JPanel();
-        generalInfoPanel.setLayout(new GridLayout(24, 2));
+        generalInfoPanel.setLayout(new GridLayout(26, 2));
         generalInfoPanel.add(new JLabel("Course Name:"));
         JTextField courseNameField = new JTextField();
         generalInfoPanel.add(courseNameField);
@@ -859,6 +926,15 @@ public class GraphicalUserInterface {
         generalInfoPanel.add(new JLabel("Suggested Materials:"));
         JTextField suggestedMaterialsField = new JTextField();
         generalInfoPanel.add(suggestedMaterialsField);
+
+        generalInfoPanel.add(new JLabel("Editor"));
+        JTextField EditorField = new JTextField();
+        generalInfoPanel.add(EditorField);
+
+        generalInfoPanel.add( new JLabel("Reason"));
+        JTextField ReasonField = new JTextField();
+        generalInfoPanel.add(ReasonField);
+
 
 
         JPanel weeklySubjectsPanel = new JPanel();
@@ -1147,7 +1223,7 @@ public class GraphicalUserInterface {
                 gui.CourseOutcomeData(jTextContributionLevelArrayList);
 
 
-                gui.insert_GeneralInformation(courseNameField.getText(),courseCodeField.getText(), semesterField.getText(), theoryField.getText(), applicationLabField.getText(), localCreditsField.getText(),ECTSField.getText(), prerequisitesField.getText(), courseLanguageField.getText(), courseTypeField.getText(), courseLevelField.getText(), modeOfDeliveryField.getText(), teachingMethodsField.getText(), courseCoordinatorField.getText(), courseLecturersField.getText(),assistantsField.getText(), courseObjectivesField.getText(), learningOutcomesField.getText(), courseDescriptionField.getText(), courseCategoryField.getText(),courseNotesField.getText(), suggestedMaterialsField.getText());
+                gui.insert_GeneralInformation(courseNameField.getText(),courseCodeField.getText(), semesterField.getText(), theoryField.getText(), applicationLabField.getText(), localCreditsField.getText(),ECTSField.getText(), prerequisitesField.getText(), courseLanguageField.getText(), courseTypeField.getText(), courseLevelField.getText(), modeOfDeliveryField.getText(), teachingMethodsField.getText(), courseCoordinatorField.getText(), courseLecturersField.getText(),assistantsField.getText(), courseObjectivesField.getText(), learningOutcomesField.getText(), courseDescriptionField.getText(), courseCategoryField.getText(),courseNotesField.getText(), suggestedMaterialsField.getText(),EditorField.getText(),ReasonField.getText());
 
 
 
