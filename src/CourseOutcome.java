@@ -1,9 +1,9 @@
 public class CourseOutcome {
-    private int number;
+    private String number;
     private String programCompetencies;
-    private int contributionLevel[];
+    private String contributionLevel;
 
-    public CourseOutcome(int number, String programCompetencies, int[] contributionLevel) {
+    public CourseOutcome(String number, String programCompetencies, String contributionLevel) {
         this.number = number;
         this.programCompetencies = programCompetencies;
         this.contributionLevel = contributionLevel;
@@ -13,11 +13,11 @@ public class CourseOutcome {
 
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
@@ -29,11 +29,11 @@ public class CourseOutcome {
         this.programCompetencies = programCompetencies;
     }
 
-    public int[] getContributionLevel() {
+    public String getContributionLevel() {
         return contributionLevel;
     }
 
-    public void setContributionLevel(int[] contributionLevel) {
+    public void setContributionLevel(String contributionLevel) {
         this.contributionLevel = contributionLevel;
     }
 }

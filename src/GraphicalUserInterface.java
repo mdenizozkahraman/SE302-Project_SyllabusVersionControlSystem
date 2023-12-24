@@ -951,27 +951,28 @@ public class GraphicalUserInterface {
             @Override
             public void actionPerformed(ActionEvent e) {
                 syllabus.getGeneralInformation().setCourseName(courseNameField.getText());
-                String courseCode = courseCodeField.getText();
-                String semester = semesterField.getText();
-                String theoryHour = theoryField.getText();
-                String labHour = applicationLabField.getText();
-                String localCredit = localCreditsField.getText();
-                String ects = ECTSField.getText();
-                String prerequisites = prerequisitesField.getText();
-                String courseLanguage = courseLanguageField.getText();
-                String courseType = courseTypeField.getText();
-                String courseLevel = courseLevelField.getText();
-                String modeOfDelivery = modeOfDeliveryField.getText();
-                String teachingMethod = teachingMethodsField.getText();
-                String courseCoordinator = courseCoordinatorField.getText();
-                String courseLecturer = courseLecturersField.getText();
-                String assistant = assistantsField.getText();
-                String courseObjectives = courseObjectivesField.getText();
-                String learningOutcomes = learningOutcomesField.getText();
-                String courseDescription = courseDescriptionField.getText();
-                String courseCategory = courseCategoryField.getText();
-                String courseBook = courseNotesField.getText();
-                String suggestedMaterials = suggestedMaterialsField.getText();
+                syllabus.getGeneralInformation().setCourseCode(courseCodeField.getText());
+                syllabus.getGeneralInformation().setSemester(semesterField.getText());
+                syllabus.getGeneralInformation().setTheoryHour(theoryField.getText());
+                syllabus.getGeneralInformation().setLabHour(applicationLabField.getText());
+                syllabus.getGeneralInformation().setLocalCredit(localCreditsField.getText());
+                syllabus.getGeneralInformation().setEcts(ECTSField.getText());
+                syllabus.getGeneralInformation().setPrerequisites(prerequisitesField.getText());
+                syllabus.getGeneralInformation().setCourseLanguage(courseLanguageField.getText());
+                syllabus.getGeneralInformation().setCourseType(courseTypeField.getText());
+                syllabus.getGeneralInformation().setCourseLevel(courseLevelField.getText());
+                syllabus.getGeneralInformation().setModeOfDelivery(modeOfDeliveryField.getText());
+                syllabus.getGeneralInformation().setTeachingMethods(teachingMethodsField.getText());
+                syllabus.getGeneralInformation().setCourseCoordinator(courseCoordinatorField.getText());
+                syllabus.getGeneralInformation().setCourseLecturer(courseLecturersField.getText());
+                syllabus.getGeneralInformation().setCourseAssistant(assistantsField.getText());
+                syllabus.getGeneralInformation().setCourseObjective(courseObjectivesField.getText());
+                syllabus.getGeneralInformation().setLearningOutcomes(learningOutcomesField.getText());
+                syllabus.getGeneralInformation().setCourseDescription(courseDescriptionField.getText());
+                syllabus.getGeneralInformation().setCourseCategory(courseCategoryField.getText());
+                syllabus.getWeeklySubjects().setCourseNotes(courseNotesField.getText());
+                syllabus.getWeeklySubjects().setSuggestedReadings(suggestedMaterialsField.getText());
+
 
 
 
@@ -999,7 +1000,7 @@ public class GraphicalUserInterface {
                 gui.CourseOutcomeData(jTextContributionLevelArrayList);
 
 
-                gui.insert_GeneralInformation(courseNameField.getText(),courseCode,semester,theoryHour,labHour,localCredit,ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials);
+                //gui.insert_GeneralInformation(courseNameField.getText(),courseCode,semester,theoryHour,labHour,localCredit,ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials);
 
 
 

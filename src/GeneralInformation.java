@@ -2,20 +2,14 @@ import java.util.ArrayList;
 
 public class GeneralInformation {
     private String courseName, courseCode, semester;
-    private int theoryHour, labHour, localCredit, ects;
+    private String theoryHour, labHour, localCredit, ects;
 
 
     private String prerequisites, teachingMethods, courseObjective, learningOutcomes, courseDescription;
-    private String courseCategory[];
-    private ArrayList<String> courseCoordinator, courseLecturer, courseAssistant;
+    private String courseCategory, courseLanguage;
+    private String courseCoordinator, courseLecturer, courseAssistant, courseLevel, courseType, modeOfDelivery;
 
-    public GeneralInformation(String courseName, String courseCode, String semester, int theoryHour,
-                              int labHour, int localCredit,int ects, String prerequisites,
-                              String teachingMethods, String courseObjective,
-                              String learningOutcomes, String courseDescription, String[] courseCategory,
-                              ArrayList<String> courseCoordinator, ArrayList<String> courseLecturer,
-                              ArrayList<String> courseAssistant)
-    {
+    public GeneralInformation(String courseName, String courseCode, String semester, String theoryHour, String labHour, String localCredit, String ects, String prerequisites, String teachingMethods, String courseObjective, String learningOutcomes, String courseDescription, String courseCategory, String courseLanguage, String courseCoordinator, String courseLecturer, String courseAssistant, String courseLevel, String courseType, String modeOfDelivery) {
         this.courseName = courseName;
         this.courseCode = courseCode;
         this.semester = semester;
@@ -29,13 +23,16 @@ public class GeneralInformation {
         this.learningOutcomes = learningOutcomes;
         this.courseDescription = courseDescription;
         this.courseCategory = courseCategory;
+        this.courseLanguage = courseLanguage;
         this.courseCoordinator = courseCoordinator;
         this.courseLecturer = courseLecturer;
         this.courseAssistant = courseAssistant;
+        this.courseLevel = courseLevel;
+        this.courseType = courseType;
+        this.modeOfDelivery = modeOfDelivery;
     }
 
     public GeneralInformation() {
-
     }
 
     public String getCourseName() {
@@ -62,35 +59,35 @@ public class GeneralInformation {
         this.semester = semester;
     }
 
-    public int getTheoryHour() {
+    public String getTheoryHour() {
         return theoryHour;
     }
 
-    public void setTheoryHour(int theoryHour) {
+    public void setTheoryHour(String theoryHour) {
         this.theoryHour = theoryHour;
     }
 
-    public int getLabHour() {
+    public String getLabHour() {
         return labHour;
     }
 
-    public void setLabHour(int labHour) {
+    public void setLabHour(String labHour) {
         this.labHour = labHour;
     }
 
-    public int getLocalCredit() {
+    public String getLocalCredit() {
         return localCredit;
     }
 
-    public void setLocalCredit(int localCredit) {
+    public void setLocalCredit(String localCredit) {
         this.localCredit = localCredit;
     }
 
-    public int getEcts() {
+    public String getEcts() {
         return ects;
     }
 
-    public void setEcts(int ects) {
+    public void setEcts(String ects) {
         this.ects = ects;
     }
 
@@ -134,48 +131,67 @@ public class GeneralInformation {
         this.courseDescription = courseDescription;
     }
 
-    public String[] getCourseCategory() {
+    public String getCourseCategory() {
         return courseCategory;
     }
 
-    public void setCourseCategory(String[] courseCategory) {
+    public void setCourseCategory(String courseCategory) {
         this.courseCategory = courseCategory;
     }
 
-    public ArrayList<String> getCourseCoordinator() {
+    public String getCourseLanguage() {
+        return courseLanguage;
+    }
+
+    public void setCourseLanguage(String courseLanguage) {
+        this.courseLanguage = courseLanguage;
+    }
+
+    public String getCourseCoordinator() {
         return courseCoordinator;
     }
 
-    public void setCourseCoordinator(ArrayList<String> courseCoordinator) {
+    public void setCourseCoordinator(String courseCoordinator) {
         this.courseCoordinator = courseCoordinator;
     }
 
-    public ArrayList<String> getCourseLecturer() {
+    public String getCourseLecturer() {
         return courseLecturer;
     }
 
-    public void setCourseLecturer(ArrayList<String> courseLecturer) {
+    public void setCourseLecturer(String courseLecturer) {
         this.courseLecturer = courseLecturer;
     }
 
-    public ArrayList<String> getCourseAssistant() {
+    public String getCourseAssistant() {
         return courseAssistant;
     }
 
-    public void setCourseAssistant(ArrayList<String> courseAssistant) {
+    public void setCourseAssistant(String courseAssistant) {
         this.courseAssistant = courseAssistant;
     }
 
+    public String getCourseLevel() {
+        return courseLevel;
+    }
 
+    public void setCourseLevel(String courseLevel) {
+        this.courseLevel = courseLevel;
+    }
 
+    public String getCourseType() {
+        return courseType;
+    }
 
+    public void setCourseType(String courseType) {
+        this.courseType = courseType;
+    }
 
+    public String getModeOfDelivery() {
+        return modeOfDelivery;
+    }
 
-
-
-
-
-
-
-
+    public void setModeOfDelivery(String modeOfDelivery) {
+        this.modeOfDelivery = modeOfDelivery;
+    }
 }
