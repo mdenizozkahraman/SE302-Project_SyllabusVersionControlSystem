@@ -13,6 +13,69 @@ import java.util.stream.Collectors;
 public class GraphicalUserInterface {
 
 
+    private void deleteAllDatabase() {
+        Connection con = SyllabusDB.connect();
+        PreparedStatement psGeneral_Information = null;
+        PreparedStatement psAssessments = null;
+        PreparedStatement pscourse_Outcome = null;
+        PreparedStatement psWeeklySubjects = null;
+        PreparedStatement psEcts_Workload = null;
+
+
+        try {
+
+
+            String deleteEcts_Workload = "DELETE FROM Ects_Workload";
+            psEcts_Workload = con.prepareStatement(deleteEcts_Workload);
+            psEcts_Workload.executeUpdate();
+
+            String deleteWeeklySubjects = "DELETE FROM Weekly_Subjects";
+            psWeeklySubjects = con.prepareStatement(deleteWeeklySubjects);
+            psWeeklySubjects.executeUpdate();
+
+            String deletecourse_Outcome = "DELETE FROM course_Outcome";
+            pscourse_Outcome = con.prepareStatement(deletecourse_Outcome);
+            pscourse_Outcome.executeUpdate();
+
+            String deleteAssessments = "DELETE FROM Assesment";
+            psAssessments = con.prepareStatement(deleteAssessments);
+            psAssessments.executeUpdate();
+
+            String deleteGeneral_Information = "DELETE FROM General_Information";
+            psGeneral_Information = con.prepareStatement(deleteGeneral_Information);
+            psGeneral_Information.executeUpdate();
+
+            System.out.println("Data with Course Code: " + "" + " has been deleted successfully.");
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } finally {
+            try {
+                if (psGeneral_Information != null) {
+                    psGeneral_Information.close();
+                }
+                if (psAssessments != null) {
+                    psAssessments.close();
+                }
+                if(pscourse_Outcome != null){
+                    pscourse_Outcome.close();
+                }
+                if(psWeeklySubjects != null){
+                    psWeeklySubjects.close();
+                }
+                if(psEcts_Workload != null){
+                    psEcts_Workload.close();
+                }
+
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+    }
+
+
     private static JTextArea resultTextArea;
 
 
@@ -26,6 +89,10 @@ public class GraphicalUserInterface {
     static Syllabus syllabus = new Syllabus(0,assessment,courseOutcome,generalInformation,weeklySubjects,workLoad);
 
     static JsonClass jsonClass;
+
+
+
+
 
     private static void displaySyllabus(String courseCode) {
         Connection con = SyllabusDB.connect();
@@ -470,30 +537,7 @@ public class GraphicalUserInterface {
 
 
 
-      /*  searchButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JDialog searchDialog = new JDialog();
-                searchDialog.setTitle("Search");
-                searchDialog.setSize(300,100);
-                searchDialog.setLayout(new GridLayout(1,2,10,10));
-                JTextField courseCodeField = new JTextField();
-                searchDialog.add(new JLabel("CourseCode: "));
-                searchDialog.add(courseCodeField);
-                JButton searchButton = new JButton("SEARCH ");
-                searchButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        String courseCode = courseCodeField.getText();
-                        displaySyllabus(courseCode);
-                        searchDialog.dispose();
-                    }
-                });
-                searchDialog.add(searchButton);
-                searchDialog.setVisible(true);
 
-            }
-        });
-*/
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -531,6 +575,17 @@ public class GraphicalUserInterface {
 
                 deleteDialog.add(new JLabel("Course Code:"));
                 deleteDialog.add(courseCodeField);
+                JButton deleteAll = new JButton("DELETE ALL MEMBERS");
+
+                deleteAll.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        GraphicalUserInterface gui = new GraphicalUserInterface();
+                        gui.deleteAllDatabase();
+                        deleteDialog.dispose();
+                    }
+                });
+
 
                 JButton deleteButton = new JButton("Delete");
                 deleteButton.addActionListener(new ActionListener() {
@@ -543,7 +598,7 @@ public class GraphicalUserInterface {
                         deleteDialog.dispose();
                     }
                 });
-
+                deleteDialog.add(deleteAll);
                 deleteDialog.add(deleteButton);
                 deleteDialog.setVisible(true);
 
