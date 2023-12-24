@@ -33,8 +33,9 @@ public class GraphicalUserInterface {
         ResultSet rs = null;
 
         try {
-            String sql = "SELECT * FROM General_Information ORDER BY id DESC LIMIT 1";
+            String sql = "SELECT * FROM General_Information WHERE courseCode = ? ORDER BY id DESC LIMIT 1";
             ps = con.prepareStatement(sql);
+            ps.setString(1, courseCode);
             rs = ps.executeQuery();
 
             StringBuilder sb = new StringBuilder();
@@ -1000,8 +1001,7 @@ public class GraphicalUserInterface {
                 gui.CourseOutcomeData(jTextContributionLevelArrayList);
 
 
-                //gui.insert_GeneralInformation(courseNameField.getText(),courseCode,semester,theoryHour,labHour,localCredit,ects,prerequisites,courseLanguage,courseType,courseLevel,modeOfDelivery,teachingMethod,courseCoordinator,courseLecturer,assistant,courseObjectives,learningOutcomes,courseDescription,courseCategory,courseBook,suggestedMaterials);
-
+                gui.insert_GeneralInformation(courseNameField.getText(),courseCodeField.getText(), semesterField.getText(), theoryField.getText(), applicationLabField.getText(), localCreditsField.getText(),ECTSField.getText(), prerequisitesField.getText(), courseLanguageField.getText(), courseTypeField.getText(), courseLevelField.getText(), modeOfDeliveryField.getText(), teachingMethodsField.getText(), courseCoordinatorField.getText(), courseLecturersField.getText(),assistantsField.getText(), courseObjectivesField.getText(), learningOutcomesField.getText(), courseDescriptionField.getText(), courseCategoryField.getText(),courseNotesField.getText(), suggestedMaterialsField.getText());
 
 
 
