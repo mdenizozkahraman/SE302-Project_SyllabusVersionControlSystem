@@ -451,6 +451,7 @@ public class GraphicalUserInterface {
         frame.setLayout(new GridBagLayout());
 
         JPanel topPanel = new JPanel(new FlowLayout());
+        topPanel.add(new JLabel("Course Code: "));
         JTextField searchText = new JTextField(30);
         JButton searchButton = new JButton("Search");
         JButton addButton = new JButton("Add");
@@ -468,7 +469,7 @@ public class GraphicalUserInterface {
 
 
 
-        searchButton.addActionListener(new ActionListener() {
+      /*  searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JDialog searchDialog = new JDialog();
                 searchDialog.setTitle("Search");
@@ -491,7 +492,14 @@ public class GraphicalUserInterface {
 
             }
         });
-
+*/
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String courseCode = searchText.getText();
+                displaySyllabus(courseCode);
+            }
+        });
 
 
         addButton.addActionListener(new ActionListener() {
@@ -554,7 +562,6 @@ public class GraphicalUserInterface {
                 jsonClass.json(syllabus);
             }
         });
-
 
 
         topPanel.add(searchText);
@@ -1015,10 +1022,8 @@ public class GraphicalUserInterface {
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(okButton);
         buttonPanel.add(cancelButton);
-
         addFrame.add(tabbedPane, BorderLayout.CENTER);
         addFrame.add(buttonPanel, BorderLayout.SOUTH);
-
 
         addFrame.setVisible(true);
     }
