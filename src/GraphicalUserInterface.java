@@ -553,7 +553,44 @@ public class GraphicalUserInterface {
         prevVersionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                showAddForm();
+                JFrame pvFrame = new JFrame("Previous Versions");
+                pvFrame.setSize(1000, 600);
+                pvFrame.setLocationRelativeTo(null);
+                pvFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+                JPanel contentPanel = new JPanel(new BorderLayout());
+
+                JPanel topPanel = new JPanel();
+                JTextField searchField = new JTextField(20);
+                JButton searchButton = new JButton("Search");
+                topPanel.add(searchField);
+                topPanel.add(searchButton);
+
+
+
+                JPanel centerPanel = new JPanel(new GridLayout(1, 2));
+                JTextArea textArea1 = new JTextArea();
+                textArea1.append("Previous Versions");
+                JTextArea textArea2 = new JTextArea();
+                textArea2.append("Latest Version");
+                centerPanel.add(new JScrollPane(textArea1));
+                centerPanel.add(new JScrollPane(textArea2));
+
+                JPanel bottomPanel = new JPanel();
+                JButton previousButton = new JButton("Previous");
+                JButton nextButton = new JButton("Next");
+                bottomPanel.add(previousButton);
+                bottomPanel.add(nextButton);
+
+
+
+                contentPanel.add(topPanel, BorderLayout.NORTH);
+                contentPanel.add(centerPanel, BorderLayout.CENTER);
+                contentPanel.add(bottomPanel, BorderLayout.SOUTH);
+
+                pvFrame.add(contentPanel);
+
+                pvFrame.setVisible(true);
             }
         });
 
@@ -595,22 +632,7 @@ public class GraphicalUserInterface {
 
         bottomPanel.add(scrollPane, BorderLayout.CENTER);
 
-        JMenuBar menuBar = new JMenuBar();
-        JMenu helpMenu = new JMenu("Help");
-        JMenuItem helpMenuItem = new JMenuItem("Help");
 
-
-        helpMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Help Content");
-            }
-        });
-
-        helpMenu.add(helpMenuItem);
-        menuBar.add(helpMenu);
-
-        frame.setJMenuBar(menuBar);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
     }
