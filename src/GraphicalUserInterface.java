@@ -25,7 +25,7 @@ public class GraphicalUserInterface {
 
     static Syllabus syllabus = new Syllabus(0,assessment,courseOutcome,generalInformation,weeklySubjects,workLoad);
 
-    static JsonClass jsonClass = new JsonClass();
+    static JsonClass jsonClass;
 
     private static void displaySyllabus(String courseCode) {
         Connection con = SyllabusDB.connect();
