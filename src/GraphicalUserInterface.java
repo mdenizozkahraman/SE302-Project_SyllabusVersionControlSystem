@@ -78,6 +78,7 @@ public class GraphicalUserInterface {
 
     private static JTextArea resultTextArea;
 
+    private static JTextArea textArea2;
 
 
     static Assessment assessment = new Assessment();
@@ -91,6 +92,65 @@ public class GraphicalUserInterface {
     static JsonClass jsonClass;
 
 
+    private static void displayLastSyllabus(String courseCode) {
+        Connection con = SyllabusDB.connect();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            String sql = "SELECT * FROM General_Information WHERE courseCode = ? ORDER BY id DESC LIMIT 1";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, courseCode);
+            rs = ps.executeQuery();
+
+            StringBuilder sb = new StringBuilder();
+            while (rs.next()) {
+                sb.append("Course Name: ").append(rs.getString("courseName")).append("\n");
+                sb.append("Course Code: ").append(rs.getString("courseCode")).append("\n");
+                sb.append("Semester: ").append(rs.getString("semester")).append("\n");
+                sb.append("theoryHour: ").append(rs.getString("theoryHour")).append("\n");
+                sb.append("labHour: ").append(rs.getString("labHour")).append("\n");
+                sb.append("localCredit: ").append(rs.getString("localCredit")).append("\n");
+                sb.append("ects: ").append(rs.getString("ects")).append("\n");
+                sb.append("prerequisites").append(rs.getString("prerequisites")).append("\n");
+                sb.append("courseLanguage: ").append(rs.getString("courseLanguage")).append("\n");
+                sb.append("courseType: ").append(rs.getString("courseType")).append("\n");
+                sb.append("courseLevel: ").append(rs.getString("courseLevel")).append("\n");
+                sb.append("modeOfDelivery: ").append(rs.getString("modeOfDelivery")).append("\n");
+                sb.append("teachingMethod: ").append(rs.getString("teachingMethod")).append("\n");
+                sb.append("courseCoordinator: ").append(rs.getString("courseCoordinator")).append("\n");
+                sb.append("courseLecturer: ").append(rs.getString("courseLecturer")).append("\n");
+                sb.append("assistant: ").append(rs.getString("assistant")).append("\n");
+                sb.append("courseObjectives: ").append(rs.getString("courseObjectives")).append("\n");
+                sb.append("courseDescription: ").append(rs.getString("courseDescription")).append("\n");
+                sb.append("courseCategory: ").append(rs.getString("courseCategory")).append("\n");
+                sb.append("courseBook: ").append(rs.getString("courseBook")).append("\n");
+                sb.append("suggestedMaterials: ").append(rs.getString("suggestedMaterials")).append("\n");
+
+
+
+                sb.append("----------------------\n");
+            }
+
+            textArea2.setText(sb.toString());
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
+    }
 
 
 
@@ -621,12 +681,21 @@ public class GraphicalUserInterface {
                 topPanel.add(searchField);
                 topPanel.add(searchButton);
 
+                searchButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                    String courseCode = searchField.getText();
+
+                        displayLastSyllabus(courseCode);
+                    }
+                });
+
 
 
                 JPanel centerPanel = new JPanel(new GridLayout(1, 2));
                 JTextArea textArea1 = new JTextArea();
                 textArea1.append("Previous Versions");
-                JTextArea textArea2 = new JTextArea();
+                textArea2 = new JTextArea();
                 textArea2.append("Latest Version");
                 centerPanel.add(new JScrollPane(textArea1));
                 centerPanel.add(new JScrollPane(textArea2));
