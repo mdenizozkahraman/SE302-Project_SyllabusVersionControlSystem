@@ -91,7 +91,7 @@ public class GraphicalUserInterface {
 
     static Syllabus syllabus = new Syllabus(0,assessment,courseOutcome,generalInformation,weeklySubjects,workLoad);
 
-    static JsonClass jsonClass;
+    static JsonClass jsonClass = new JsonClass();
 
 
     private static void displayPreviousSyllabus(String courseCode) {
